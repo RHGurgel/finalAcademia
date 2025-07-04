@@ -1,0 +1,58 @@
+<link rel="stylesheet" href="static/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="static/assets/css/owl.carousel.min.css">
+<link rel="stylesheet" href="static/assets/css/slicknav.css">
+<link rel="stylesheet" href="static/assets/css/flaticon.css">
+<link rel="stylesheet" href="static/assets/css/gijgo.css">
+<link rel="stylesheet" href="static/assets/css/animate.min.css">
+<link rel="stylesheet" href="static/assets/css/animated-headline.css">
+<link rel="stylesheet" href="static/assets/css/magnific-popup.css">
+<link rel="stylesheet" href="static/assets/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="static/assets/css/themify-icons.css">
+<link rel="stylesheet" href="static/assets/css/slick.css">
+<link rel="stylesheet" href="static/assets/css/nice-select.css">
+<link rel="stylesheet" href="static/assets/css/style.css">
+<link rel="stylesheet" href="static/assets/fonts/">
+<link rel="stylesheet" type="text/css" href="_flaticon.scss">
+
+
+<h2 class="comments-count">Listar - Avaliação</h2>
+  <div class="reply-form">
+
+    <table class="table">
+      <thead>
+        <th>Peso</th>
+        <th>Altura</th>
+        <th>Braço</th>
+        <th>Ombro</th>
+        <th>Peito</th>
+        <th>Cintura</th>
+        <th>Quadril</th>
+        <th>Abdominal</th>
+        <th>CoxaMedial</th>
+        <th>Panturrilha</th>
+
+      </thead>
+      <tbody>
+      {% if avaliacao %}
+        {% for p in avaliacao %}
+          <tr>
+            <td>{{ p[0] }}</td>
+            <td>{{ p[1] }}</td>
+            <td>{{ p[2] }}</td>
+            <td>{{ p[3] }}</td>
+            <td>{{ p[4] }}</td>
+            <td>{{ p[5] }}</td>
+            <td>{{ p[6] }}</td>
+            <td>{{ p[7] }}</td>
+            <td>{{ p[8] }}</td>
+            <td>{{ p[9] }}</td>
+
+
+          </tr>
+        {% endfor %}
+      {% else %}
+        <p>Nenhum item foi encontrado</p>
+      {% endif %}
+      </tbody>
+    </table>
+  </div>

@@ -1,0 +1,89 @@
+<link rel="stylesheet" href="static/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="static/assets/css/slicknav.css">
+    <link rel="stylesheet" href="static/assets/css/flaticon.css">
+    <link rel="stylesheet" href="static/assets/css/gijgo.css">
+    <link rel="stylesheet" href="static/assets/css/animate.min.css">
+    <link rel="stylesheet" href="static/assets/css/animated-headline.css">
+    <link rel="stylesheet" href="static/assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="static/assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="static/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="static/assets/css/slick.css">
+    <link rel="stylesheet" href="static/assets/css/nice-select.css">
+    <link rel="stylesheet" href="static/assets/css/style.css">
+    <link rel="stylesheet" href="static/assets/fonts/">
+    <link rel="stylesheet" type="text/css" href="_flaticon.scss">
+
+    <title>Avalicao</title>
+
+    <h4 class="comments-count">Avaliacao</h4>
+
+              <div class="reply-form">
+
+<!--                <h4>Leave a Reply</h4>-->
+<!--                <p>Your email address will not be published. Required fields are marked * </p>-->
+                <form action="{{ url_for('avaliacao') }}" method="POST">
+                  <div class="row">
+                    <div class="col form-group">
+                      <label for="peso">Peso</label>
+                      <input name="peso" type="text" class="form-control" placeholder="" required>
+                    </div>
+                    <div class="col form-group">
+                      <label for="altura">Altura</label>
+                      <input name="altura" type="text" class="form-control" placeholder="">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col form-group">
+                      <label for="braco">Braco</label>
+                      <input name="braco" type="text" class="form-control" placeholder="">
+                    </div>
+                  </div>
+                    <div class="row">
+                    <div class="col form-group">
+                      <label for="ombro">Ombro</label>
+                      <input name="ombro" type="text" class="form-control" placeholder="">
+                    </div>
+                  </div>
+                    <div class="row">
+                    <div class="col form-group">
+                      <label for="peito">Peito</label>
+                      <input name="peito" type="text" class="form-control" placeholder="">
+                    </div>
+                  </div>
+                    <div class="row">
+                    <div class="col form-group">
+                      <label for="cintura">Cintura</label>
+                      <input name="cintura" type="text" class="form-control" placeholder="">
+                    </div>
+                  </div>
+                    <div class="row">
+                    <div class="col form-group">
+                      <label for="quadril">Quadril</label>
+                      <input name="quadril" type="text" class="form-control" placeholder="">
+                    </div>
+                  </div>
+                    <div class="row">
+                    <div class="col form-group">
+                      <label for="abdominal">Abdominal</label>
+                      <input name="abdominal" type="text" class="form-control" placeholder="">
+                    </div>
+                  </div>
+                    <div class="row">
+                    <div class="col form-group">
+                      <label for="coxaMedial">CoxaMedial</label>
+                      <input name="coxaMedial" type="text" class="form-control" placeholder="">
+                    </div>
+                  </div>
+                    <div class="row">
+                    <div class="col form-group">
+                      <label for="panturrilha">Panturrilha</label>
+                      <input name="panturrilha" type="text" class="form-control" placeholder="">
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">Cadastrar</button>
+
+                </form>
+
+              </div>

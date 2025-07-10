@@ -5,38 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f574b97e-b19f-483e-b6b8-0477184b7737" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/academia/models/exercicio.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/models/exercicioDAO.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/static/assets/css/mainaval.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/about.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/blog_details.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/contact.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/contact_process.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/courses.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/elements.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/exercicio-cadastrar.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/gallery.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/listaraval.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/main.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/mainaval.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/peito.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/pricing.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/roscabiceps.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/templates/supinoreto.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia" beforeDir="false" afterPath="$PROJECT_DIR$/academia" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/.idea/academiadb.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/database/academiaCREATE.sql" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/academia/static/assets/js/generatepdf.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/academia/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/models/usuario.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/models/usuario.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/models/usuarioDAO.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/models/usuarioDAO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/avaliacao.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/avaliacao.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/listaraval.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/listaraval.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/peito.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/peito.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +28,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/academia" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="2RFE5HUxVMsGfr7GWfoz9eAV4RU" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -64,7 +40,9 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File" value="JavaScript" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Downloads/Projeto Academia-Versao Final final final" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -74,34 +52,6 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\20201084010012\Downloads\academia_rafael\academia\models" />
     </key>
-  </component>
-  <component name="RunManager">
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="D:\Users\rreag\PycharmProjects\Trabalho de Programação - Aplicação de dados\venv\Scripts\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/academia" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/academia/main.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.main" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -113,6 +63,9 @@
       <updated>1686837245144</updated>
     </task>
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.js" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

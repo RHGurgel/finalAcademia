@@ -15,28 +15,31 @@
 <link rel="stylesheet" type="text/css" href="_flaticon.scss">
 
 
+
+<div id='content-to-print'>
+       <!-- Conteúdo que será impresso em PDF -->
+
 <h2 class="comments-count">Listar - Avaliação</h2>
   <div class="reply-form">
 
     <table class="table">
       <thead>
-        <th>Peso</th>
-        <th>Altura</th>
-        <th>Braço</th>
-        <th>Ombro</th>
-        <th>Peito</th>
-        <th>Cintura</th>
-        <th>Quadril</th>
-        <th>Abdominal</th>
-        <th>CoxaMedial</th>
-        <th>Panturrilha</th>
+        <th>Peso (cm)</th>
+        <th>Altura (cm)</th>
+        <th>Braço (cm)</th>
+        <th>Ombro (cm)</th>
+        <th>Peito (cm)</th>
+        <th>Cintura (cm)</th>
+        <th>Quadril (cm)</th>
+        <th>Abdominal (cm)</th>
+        <th>CoxaMedial (cm)</th>
+        <th>Panturrilha (cm)</th>
 
       </thead>
       <tbody>
       {% if avaliacao %}
         {% for p in avaliacao %}
           <tr>
-            <td>{{ p[0] }}</td>
             <td>{{ p[1] }}</td>
             <td>{{ p[2] }}</td>
             <td>{{ p[3] }}</td>
@@ -46,6 +49,7 @@
             <td>{{ p[7] }}</td>
             <td>{{ p[8] }}</td>
             <td>{{ p[9] }}</td>
+            <td>{{ p[10] }}</td>
 
 
           </tr>
@@ -56,3 +60,8 @@
       </tbody>
     </table>
   </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="static/assets/js/generatepdf.js" defer></script>
+</div>
+<button id="generatePDF">Imprimir em PDF</button>

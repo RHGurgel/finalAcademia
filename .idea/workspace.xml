@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f574b97e-b19f-483e-b6b8-0477184b7737" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/academia/static/assets/js/generatepdf.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/templates/avaliacao.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/avaliacao.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/templates/listaraval.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/listaraval.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/templates/peito.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/peito.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

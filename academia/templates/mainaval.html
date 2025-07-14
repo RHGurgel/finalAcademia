@@ -1,4 +1,12 @@
-<link rel="stylesheet" href="static/assets/css/bootstrap.min.css">
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu de Avaliação</title>
+
+    <link rel="stylesheet" href="static/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="static/assets/css/slicknav.css">
     <link rel="stylesheet" href="static/assets/css/flaticon.css">
@@ -13,41 +21,70 @@
     <link rel="stylesheet" href="static/assets/css/style.css">
     <link rel="stylesheet" href="static/assets/fonts/">
     <link rel="stylesheet" type="text/css" href="_flaticon.scss">
-    <link rel="stylesheet" type="text/css" href="static/assets/css/mainaval.css">
 
+    <style>
+        body {
+            background-image: url('../static/assets/img/gallery/img-fundo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-    <title>Avaliacao</title>
+        .main-content-card {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
 
+        .main-content-card h1 {
+            color: #2c234d;
+            margin-bottom: 30px;
+        }
 
+        .main-button {
+            margin-bottom: 20px;
+            width: 100%;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
 
+        @media (max-width: 576px) {
+            .main-content-card {
+                padding: 25px;
+            }
+            .main-content-card h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
 
-<style>
-    body{
-        width: 400px;
-        height: 300px;
-        background-image: url(static/assets/img/gallery/cat1.png)
+</head>
 
-    }
+<body>
 
+    <div class="main-content-card">
+        <h1>Bem-vindo! Escolha uma opção:</h1>
 
-</style>
+        <a href="avaliacao" class="btn btn-primary main-button">Cadastrar Avaliação</a>
 
-              <div class="reply-form">
-                  </div>
+        <a href="listaraval" class="btn btn-info main-button">Minhas Avaliações</a>
+    </div>
 
-           <div class="">
-           </div>
+    <script src="static/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="static/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="static/assets/js/sb-admin-2.min.js"></script>
 
-                <div class="center">
-                <a href="avaliacao">  <button  type="submit" class="btn btn-primary" href="avaliacao">Cadastrar Avaliação</button> </a>
+</body>
 
-                </div>
-
-                <div class="center2">
-                <a href="listaraval">  <button  type="submit" class="btn btn-primary">Minhas Avaliações</button> </a>
-                </div>
-
-
-                </form>
-
-              </div>
+</html>

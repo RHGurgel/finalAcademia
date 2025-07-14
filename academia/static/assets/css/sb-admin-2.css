@@ -9940,6 +9940,13 @@ a:focus {
   background-image: linear-gradient(180deg, #f8f9fc 10%, #c2cbe5 100%);
   background-size: cover;
 }
+/*responsavel pela tela de background*/
+.bg-tela-inicio{
+  background-image: url('../img/Background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
 .bg-gradient-dark {
   background-color: #5a5c69;

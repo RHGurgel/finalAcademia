@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `academiadb`.`Usuario` (
   `sobrenome` VARCHAR(200) NOT NULL,
   `email` VARCHAR(200) NOT NULL,
   `senha` VARCHAR(200) NOT NULL,
+  'video' VARCHAR(255),
   PRIMARY KEY (`codigous`))
 ENGINE = InnoDB;
 

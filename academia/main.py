@@ -310,6 +310,11 @@ def deletar_avaliacao(id):
 
     return redirect(url_for('listaraval'))
 
+@app.route('/treinos', methods=['GET', 'POST'])
+def treinos():
+    dao = ExercicioDAO(get_db())
+    exercicio_db = dao.listar_exercicios()
+    return render_template("treinos.html", titulo="treinos", exercicio=exercicio_db)
 
 if __name__=='__main__':
     app.run(host="0.0.0.0", port=80, debug=True)

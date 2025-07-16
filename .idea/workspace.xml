@@ -4,7 +4,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f574b97e-b19f-483e-b6b8-0477184b7737" name="Changes" comment="" />
+    <list default="true" id="f574b97e-b19f-483e-b6b8-0477184b7737" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/finalAcademia.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/academia/static/assets/img/gallery/team1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/academia/templates/treinos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/database/academiadb2CREATE.sql" beforeDir="false" afterPath="$PROJECT_DIR$/academia/database/academiadb2CREATE.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/models/exercicioDAO.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/models/exercicioDAO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/css/sb-admin-2.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/academia/static/assets/css/sb-admin-2.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/academia/static/assets/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/gallery/h1_hero.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/gallery/team1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/gallery/team2.png" beforeDir="false" afterPath="$PROJECT_DIR$/academia/static/assets/img/gallery/team2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/gallery/team3.png" beforeDir="false" afterPath="$PROJECT_DIR$/academia/static/assets/img/gallery/team3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/hero/h1_hero.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/hero/hero2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/homivermelho.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/muievermelha.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/js/generatepdf.js" beforeDir="false" afterPath="$PROJECT_DIR$/academia/static/assets/js/generatepdf.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/abdomen.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/abdomen.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/about.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/alongamento.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/alongamento.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/costas.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/costas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/courses.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/courses.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/listaraval.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/listaraval.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/perna.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/perna.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,24 +48,53 @@
       </list>
     </option>
   </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Renixon-Christian"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/FaelPressao/finalAcademia.git",
+    "accountId": "ceebd5b8-c462-41ed-bbc3-d215a4f61dec"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
   <component name="ProjectId" id="2RFE5HUxVMsGfr7GWfoz9eAV4RU" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File" value="JavaScript" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Projeto-Final-Academia" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\20201084010012\Downloads\academia_rafael\academia\templates" />
@@ -43,6 +102,14 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\20201084010012\Downloads\academia_rafael\academia\models" />
     </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-PY-251.26927.74" />
+        <option value="bundled-python-sdk-657d8234b839-64d779b69b7a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.26927.74" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -52,8 +119,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1686837245144</updated>
+      <workItem from="1752665167840" duration="8125000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.js" />
@@ -68,6 +139,5 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

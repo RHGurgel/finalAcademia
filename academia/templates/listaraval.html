@@ -1,6 +1,248 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 
+<link rel="stylesheet" href="static/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="static/assets/css/owl.carousel.min.css">
+<link rel="stylesheet" href="static/assets/css/slicknav.css">
+<link rel="stylesheet" href="static/assets/css/flaticon.css">
+<link rel="stylesheet" href="static/assets/css/gijgo.css">
+<link rel="stylesheet" href="static/assets/css/animate.min.css">
+<link rel="stylesheet" href="static/assets/css/animated-headline.css">
+<link rel="stylesheet" href="static/assets/css/magnific-popup.css">
+<link rel="stylesheet" href="static/assets/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="static/assets/css/themify-icons.css">
+<link rel="stylesheet" href="static/assets/css/slick.css">
+<link rel="stylesheet" href="static/assets/css/nice-select.css">
+<link rel="stylesheet" href="static/assets/css/style.css">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Avaliações Físicas</title>
+
+</head>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<div id="content-to-print">
+    <body>
+
+    <div class="container">
+        <h1 class="mb-4 text-center">Minhas Avaliações</h1>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                <tr>
+                    <th>Peso (kg)</th>
+                    <th>Altura (m)</th>
+                    <th>Braço (cm)</th>
+                    <th>Ombro (cm)</th>
+                    <th>Peito (cm)</th>
+                    <th>Cintura (cm)</th>
+                    <th>Quadril (cm)</th>
+                    <th>Abdominal (cm)</th>
+                    <th>Coxa (cm)</th>
+                    <th>Panturrilha (cm)</th>
+                    <th class="text-center">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if avaliacao %}
+                {% for p in avaliacao %}
+                <tr data-codigo="{{ p[0] }}"> <!-- Atributo para armazenar o ID -->
+                    <td>{{ p[1] }}</td>
+                    <td>{{ p[2] }}</td>
+                    <td>{{ p[3] }}</td>
+                    <td>{{ p[4] }}</td>
+                    <td>{{ p[5] }}</td>
+                    <td>{{ p[6] }}</td>
+                    <td>{{ p[7] }}</td>
+                    <td>{{ p[8] }}</td>
+                    <td>{{ p[9] }}</td>
+                    <td>{{ p[10] }}</td>
+
+                    <td>
+
+                        <button
+                                type="button"
+                                class="btn btn-sm btn-warning btn-editar"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEditar"
+                                data-id="{{ p[0] }}"
+                                data-peso="{{ p[1] }}"
+                                data-altura="{{ p[2] }}"
+                                data-braco="{{ p[3] }}"
+                                data-ombro="{{ p[4] }}"
+                                data-peito="{{ p[5] }}"
+                                data-cintura="{{ p[6] }}"
+                                data-quadril="{{ p[7] }}"
+                                data-abdominal="{{ p[8] }}"
+                                data-coxa="{{ p[9] }}"
+                                data-panturrilha="{{ p[10] }}"
+                        >Editar
+                        </button>
+
+                        <button type="button" class="btn btn-sm btn-danger btn-deletar" data-bs-toggle="modal"
+                                data-bs-target="#modalExcluir"
+                                data-id="{{ p[0] }}"
+                        >Deletar
+                        </button>
+
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="11">Nenhum item foi encontrado</td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarLabel">Editar Avaliação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formEditar" method="POST"><input type="hidden" name="id_avaliacao" id="editId">
+
+                    <div class="mb-3">
+                        <label for="editPeso" class="form-label">Peso (kg)</label>
+                        <input type="number" step="0.01" class="form-control" id="editPeso" name="peso" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editAltura" class="form-label">Altura (m)</label>
+                        <input type="number" step="0.01" class="form-control" id="editAltura" name="altura" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editBraco" class="form-label">Braço (cm)</label>
+                        <input type="number" step="0.1" class="form-control" id="editBraco" name="braco" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editOmbro" class="form-label">Ombro (cm)</label>
+                        <input type="number" step="0.1" class="form-control" id="editOmbro" name="ombro" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPeito" class="form-label">Peito (cm)</label>
+                        <input type="number" step="0.1" class="form-control" id="editPeito" name="peito" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCintura" class="form-label">Cintura (cm)</label>
+                        <input type="number" step="0.1" class="form-control" id="editCintura" name="cintura" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editQuadril" class="form-label">Quadril (cm)</label>
+                        <input type="number" step="0.1" class="form-control" id="editQuadril" name="quadril" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editAbdominal" class="form-label">Abdominal (cm)</label>
+                        <input type="number" step="0.1" class="form-control" id="editAbdominal" name="abdominal"
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCoxa" class="form-label">Coxa Medial (cm)</label>
+                        <input type="number" step="0.1" class="form-control" id="editCoxa" name="coxaMedial" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPanturrilha" class="form-label">Panturrilha (cm)</label>
+                        <input type="number" step="0.1" class="form-control" id="editPanturrilha" name="panturrilha"
+                               required>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalExcluirLabel">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Você tem certeza de que deseja excluir esta avaliação? Esta ação não pode ser desfeita.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <a id="btnConfirmarExclusao" href="#" class="btn btn-danger">Confirmar Exclusão</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+        const modalEditar = document.getElementById('modalEditar');
+        modalEditar.addEventListener('show.bs.modal', function (event) {
+            // Botão que acionou o modal
+            const button = event.relatedTarget;
+
+            // Extrai os dados dos atributos data-* do botão
+            const id = button.getAttribute('data-id');
+            console.log("ID do registro que será editado:", id);
+            const peso = button.getAttribute('data-peso');
+            const altura = button.getAttribute('data-altura');
+            const braco = button.getAttribute('data-braco');
+            const ombro = button.getAttribute('data-ombro');
+            const peito = button.getAttribute('data-peito');
+            const cintura = button.getAttribute('data-cintura');
+            const quadril = button.getAttribute('data-quadril');
+            const abdominal = button.getAttribute('data-abdominal');
+            const coxa = button.getAttribute('data-coxa');
+            const panturrilha = button.getAttribute('data-panturrilha');
+
+            // Atualiza os campos do formulário no modal com os dados extraídos
+            const modalForm = modalEditar.querySelector('#formEditar');
+            modalForm.querySelector('#editId').value = id;
+            modalForm.querySelector('#editPeso').value = peso;
+            modalForm.querySelector('#editAltura').value = altura;
+            modalForm.querySelector('#editBraco').value = braco;
+            modalForm.querySelector('#editOmbro').value = ombro;
+            modalForm.querySelector('#editPeito').value = peito;
+            modalForm.querySelector('#editCintura').value = cintura;
+            modalForm.querySelector('#editQuadril').value = quadril;
+            modalForm.querySelector('#editAbdominal').value = abdominal;
+            modalForm.querySelector('#editCoxa').value = coxa;
+            modalForm.querySelector('#editPanturrilha').value = panturrilha;
+
+            modalForm.action = `/atualizar_avaliacao/${id}`;
+        });
+
+        // Script para o Modal de Exclusão
+        const modalExcluir = document.getElementById('modalExcluir');
+        modalExcluir.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const id = button.getAttribute('data-id');
+
+            // Define o link do botão de confirmação para a rota de exclusão correta
+            const linkConfirmacao = modalExcluir.querySelector('#btnConfirmarExclusao');
+            linkConfirmacao.href = `/deletar_avaliacao/${id}`;
+        });
+
+
+
+    </script>
+
+    </body>
+</div>
+<button id="generatePDF" class="btn btn-info">Exportar PDF</button>
+<script src="/static/assets/js/generatepdf.js" defer></script>
+</html>
+=======
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,3 +329,4 @@
 </body>
 
 </html>
+

@@ -31,3 +31,31 @@ class AvaliacaoDAO:
                 return ficha
         except:
             return None
+
+    def atualizar(self, avaliacao, codigo):
+        try:
+            sql = """UPDATE avaliacao SET peso=%s, altura=%s, braco=%s, ombro=%s, peito=%s,
+                     cintura=%s, quadril=%s, abdominal=%s, coxaMedial=%s, panturrilha=%s 
+                     WHERE codigoav=%s"""
+            cursor = self.con.cursor()
+            cursor.execute(sql, (
+                avaliacao.peso, avaliacao.altura, avaliacao.braco, avaliacao.ombro,
+                avaliacao.peito, avaliacao.cintura, avaliacao.quadril, avaliacao.abdominal,
+                avaliacao.coxaMedial, avaliacao.panturrilha, codigo
+            ))
+            self.con.commit()
+            return True
+        except Exception as e:
+            print("Erro ao atualizar:", e)
+            return False
+
+    def deletar(self, codigo):
+        try:
+            sql = "DELETE FROM avaliacao WHERE codigoav=%s"
+            cursor = self.con.cursor()
+            cursor.execute(sql, (codigo,))
+            self.con.commit()
+            return True
+        except Exception as e:
+            print("Erro ao deletar:", e)
+            return False

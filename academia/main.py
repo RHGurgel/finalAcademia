@@ -5,9 +5,6 @@ from flask import Flask, g, render_template,\
 import hashlib
 import os
 import mysql.connector
-import google.oauth2.credentials
-import google_auth_oauthlib.flow
-from google.auth.transport import requests
 import requests, json
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
@@ -264,95 +261,54 @@ def alongamento():
     exercicio_db = dao.listar_alongamento()
     return render_template("alongamento.html", titulo="alongamento", exercicio=exercicio_db)
 
-
-
 @app.route('/mainaval')
 def mainaval():
     return render_template("mainaval.html", titulo="mainaval")
 
-@app.route("/login_google")
-def login_google():
+@app.route('/atualizar_avaliacao/<int:id>', methods=['POST'])
+def atualizar_avaliacao(id):
+    if request.method == "POST":
+        peso = request.form['peso']
+        altura = request.form['altura']
+        braco = request.form['braco']
+        ombro = request.form['ombro']
+        peito = request.form['peito']
+        cintura = request.form['cintura']
+        quadril = request.form['quadril']
+        abdominal = request.form['abdominal']
+        coxaMedial = request.form['coxaMedial']
+        panturrilha = request.form['panturrilha']
 
-    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-        'client_secret.json',
-        scopes=['https://www.googleapis.com/auth/userinfo.email',
-                'https://www.googleapis.com/auth/userinfo.profile', 'openid'])
+        from models.avaliacao import Avaliacao
+        from models.avaliacaoDAO import AvaliacaoDAO
 
-    flow.redirect_uri = 'http://localhost/callback'
-
-    authorization_url, state = flow.authorization_url(
-        acess_type='offline',
-        include_granted_scopes='true')
-
-    return redirect(authorization_url)
-
-@app.route('/callback')
-def callback():
-
-    state = request.args.get('state')
-    code = request.args.get('code')
-
-    if code is None or code == '':
-        flash('Erro ao logar com conta google', 'danger')
-        return redirect(url_for('login'))
-
-    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-        'client_secret.json',
-        scopes=['https://www.googleapis.com/auth/userinfo.email',
-                'https://www.googleapis.com/auth/userinfo.profile', 'openid'],
-        state=state)
-
-    flow.redirect_uri = url_for('callback', _external=True)
-
-    authorization_response = request.url
-    flow.fetch_token(authorization_response=authorization_response)
-
-    credentials = flow.credentials
-
-    resposta_api = requests.get("https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" +
-                                credentials.token)
-    user_info = resposta_api.json()
-
-    email = str(user_info['email'])
-    dao = UsuarioDAO(get_db())
-    user = dao.obter(email)
-    print((user_info["email"]))
-
-    if user is None:
-        hash = hashlib.sha512()
-        senha = os.urandom(50)
-        secret = app.config['SECRET_KEY']
-        hash.update(f'{secret}{senha}'.encode('utf-8'))
-        senha_criptografa = hash.hexdigest()
-
-        usuario = Usuario(
-            user_info['name'],
-            user_info['email'],
-            senha_criptografa,
-            '',
+        avaliacao = Avaliacao(
+            peso, altura, braco, ombro, peito, cintura, quadril,
+            abdominal, coxaMedial, panturrilha, session['logado']['codigo']
         )
 
-        id = None
-        if usuario.senha and usuario.nome and usuario.email:
-            id = UsuarioDAO.inserir(usuario)
-            print(id)
+        dao = AvaliacaoDAO(get_db())
+        sucesso = dao.atualizar(avaliacao, id)
 
-        if id is None or id <=0:
-            flash('Erro ao cadastrar usuário', 'danger')
-            return redirect(url_for('login'))
+        if sucesso:
+            flash("Avaliação atualizada com sucesso!", "success")
         else:
-            user = UsuarioDAO.obter(user_info['email'])
+            flash("Erro ao atualizar a avaliação!", "danger")
 
-            session['logado'] = user
-            flash(f'Seja bem-vindo, {user[1]}!', 'primary')
+    return redirect(url_for('listaraval'))
 
-            revoke = requests.post(
-                'https://gauth2.googleapis.com/revoke',
-                params={'token': credentials.token},
-                headers={'content-type': 'application/x-www-form-urlencoded'})
 
-            return redirect(url_for('painel'))
+@app.route('/deletar_avaliacao/<int:id>')
+def deletar_avaliacao(id):
+    dao = AvaliacaoDAO(get_db())
+    sucesso = dao.deletar(id)
 
+    if sucesso:
+        flash("Avaliação deletada com sucesso!", "success")
+    else:
+        flash("Erro ao deletar avaliação!", "danger")
+
+    return redirect(url_for('listaraval'))
 
 
 if __name__=='__main__':

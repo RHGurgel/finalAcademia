@@ -1,5 +1,5 @@
 from flask import Flask, g, render_template,\
-    request, redirect, url_for, flash, session, make_response
+    request, redirect, url_for, flash, session, make_response, jsonify
 
 
 import hashlib
@@ -310,6 +310,43 @@ def deletar_avaliacao(id):
 
     return redirect(url_for('listaraval'))
 
+@app.route('/treinos', methods=['GET', 'POST'])
+def treinos():
+    dao = ExercicioDAO(get_db())
+    exercicio_db = dao.listar_exercicios()
+    return render_template("treinos.html", titulo="treinos", exercicio=exercicio_db)
+
+@app.route('/criartreino', methods=['GET', 'POST'])
+def criartreino():
+    return render_template("criar_treino.html", titulo="criartreino")
+
+
+
+
+
+@app.route('/get_exercises')
+def get_exercises():
+    try:
+
+        dao = ExercicioDAO(get_db())
+        exercicios = dao.listar_exercicios()
+
+        # Converter para formato JSON
+        exercicios_json = []
+        for ex in exercicios:
+            exercicios_json.append({
+                'id': ex[0],
+                'nome': ex[1],
+                'descricao': ex[2],
+                'equipamento': ex[3],
+                'muscleGroup': ex[4],
+                'video': ex[5]
+            })
+        return jsonify(exercicios_json)
+
+    except Exception as e:
+        print(f"Erro: {e}")
+        return jsonify([])
 
 if __name__=='__main__':
     app.run(host="0.0.0.0", port=80, debug=True)

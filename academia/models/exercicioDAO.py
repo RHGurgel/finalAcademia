@@ -111,3 +111,13 @@ class ExercicioDAO:
                 return alongamentos
         except:
             return None
+
+    def listar_exercicios(self):
+        try:
+            cursor = self.con.cursor()
+            sql = 'SELECT * FROM exercicios ORDER BY tp_treino'
+            cursor.execute(sql)
+            return cursor.fetchall()
+        except Exception as e:
+            print(f"Erro ao listar exercícios: {e}")
+            return []

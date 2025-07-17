@@ -25,7 +25,7 @@ class AvaliacaoDAO:
                 return avaliacao
             else:
                 # pegar todas as plantas
-                sql = "SELECT * FROM Avaliacao"
+                sql = "SELECT * FROM Avaliacao WHERE Usuario_codigous IN (SELECT codigous FROM usuario)"
                 cursor.execute(sql)
                 ficha = cursor.fetchall()
                 return ficha

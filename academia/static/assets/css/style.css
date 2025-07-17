@@ -1,3 +1,4 @@
+
 /* Theme Description
 -------------------------------------------------
 
@@ -494,8 +495,9 @@ hr {
 }
 
 /* line 244, C:/Users/HP/Desktop/July-HTML/292 Health coach/assets/scss/_common.scss */
+/*responsavel pelo botão "sair" da home page*/
 .btn {
-  background: #ff1313;
+  background:#868e96;
   font-family: "Oswald", sans-serif;
   text-transform: uppercase;
   padding: 27px 44px;
@@ -520,6 +522,8 @@ hr {
   margin: 0;
 }
 
+
+
 /* line 272, C:/Users/HP/Desktop/July-HTML/292 Health coach/assets/scss/_common.scss */
 .btn::before {
   content: "";
@@ -528,7 +532,7 @@ hr {
   top: 0;
   width: 101%;
   height: 101%;
-  background: #c20505;
+  background: #2F3542;
   z-index: 1;
   border-radius: 5px;
   transition: transform 0.5s;
@@ -639,6 +643,7 @@ hr {
 }
 
 /* line 371, C:/Users/HP/Desktop/July-HTML/292 Health coach/assets/scss/_common.scss */
+/*responsavel pelo botão do tipo do botão "sair"*/
 .border-btn::before {
   border: 1px solid transparent;
   content: "";
@@ -647,7 +652,8 @@ hr {
   top: 0;
   width: 101%;
   height: 101%;
-  background: #FF0000;
+  background:rgba(255, 0, 0, 0.33)
+ ;
   z-index: -1;
   transition: transform 0.5s;
   transition-timing-function: ease;
@@ -3159,11 +3165,11 @@ hr {
 .header-area .menu-wrapper.menu-wrapper2 {
   justify-content: center;
 }
-
+/*responsavel pela barra "inicio,Avaliacao e treinos"*/
 @media only screen and (min-width: 1200px) and (max-width: 1600px) {
   /* line 50, C:/Users/HP/Desktop/July-HTML/292 Health coach/assets/scss/_headerMenu.scss */
   .header-area .menu-wrapper .main-menu {
-    margin-right: 30px;
+    margin-right: -150px;
   }
 }
 
@@ -3390,7 +3396,7 @@ hr {
 
 /* line 31, C:/Users/HP/Desktop/July-HTML/292 Health coach/assets/scss/_h1-hero.scss */
 .slider-area2 {
-  background-image: url(../img/hero/hero2.png);
+  background-image: url(../img/hero/BackgroundExercicios.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -3398,7 +3404,7 @@ hr {
 /* line 37, C:/Users/HP/Desktop/July-HTML/292 Health coach/assets/scss/_h1-hero.scss */
 .slider-area {
   margin-top: -1px;
-  background-image: url(../img/hero/h1_hero.png);
+  background-image: url(../img/hero/BackgroundDentro1.png);
   background-repeat: no-repeat;
   background-position: top center;
   background-size: cover;
@@ -4382,12 +4388,13 @@ hr {
 }
 
 /* line 40, C:/Users/HP/Desktop/July-HTML/292 Health coach/assets/scss/_gallery.scss */
+/*cuida do "tranparente" da caixas exercicios...*/
 .gallery-area .box .overlay {
   position: absolute;
   text-align: center;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 0, 0, 0.3);
+  background-color: rgba(25, 24, 24, 0.3);
   top: 0;
   left: 0;
 }
@@ -4444,7 +4451,7 @@ hr {
   font-size: 20px;
   width: 0;
   height: 0;
-  border-bottom: 100px solid red;
+  border-bottom: 100px solid rgba(255, 0, 0, 0.33);
   border-left: 100px solid transparent;
   text-align: center;
   display: inline-block;
@@ -7896,3 +7903,17 @@ del {
 }
 
 /*# sourceMappingURL=style.css.map */
+
+@media (max-width: 767px) {
+    .reply-form {
+        max-width: 100%; /* Permite que ocupe toda a largura em telas pequenas */
+        padding-left: 15px; /* Adiciona um pequeno padding nas bordas para respiro */
+        padding-right: 15px; /* Adiciona um pequeno padding nas bordas para respiro */
+  }
+}
+/*adiciona limite na imagem*/
+.single-cat .cat-icon img {
+  width: 362px;
+  height: 300px;
+  object-fit: cover;
+}

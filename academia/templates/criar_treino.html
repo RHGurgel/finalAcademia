@@ -1,0 +1,497 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Criar Treino Personalizado</title>
+    <meta name="description" content="Crie seu treino personalizado com os melhores exercícios">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.ico">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="static/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="static/assets/css/slicknav.css">
+    <link rel="stylesheet" href="static/assets/css/animate.min.css">
+    <link rel="stylesheet" href="static/assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="static/assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="static/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="static/assets/css/slick.css">
+    <link rel="stylesheet" href="static/assets/css/nice-select.css">
+    <link rel="stylesheet" href="static/assets/css/style.css">
+    <link rel="stylesheet" href="static/assets/css/responsive.css">
+    <style>
+        /* Estilos adicionais para manter consistência */
+        .comments-count {
+            margin: 40px 0 20px;
+            font-size: 24px;
+            font-weight: 600;
+            color: #1c1c1c;
+        }
+        .card-exercise {
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .card-exercise:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .btn-add {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-remove {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .workout-summary {
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .workout-item {
+            background: white;
+            border: 1px solid #eee;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .muscle-group {
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            background: #e0e0e0;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .filter-btn {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .btn-save-workout {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .exercise-counter {
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .workout-title-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .section-title {
+            border-left: 4px solid #ff5e14;
+            padding-left: 15px;
+            margin: 30px 0 20px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <!--? Preloader Start -->
+    <!-- Preloader Start -->
+    <header>
+        <!-- Header Start -->
+        <div class="header-area header-transparent">
+            <div class="main-header header-sticky">
+                <div class="container-fluid">
+                    <div class="menu-wrapper d-flex align-items-center justify-content-between">
+                        <!-- Logo -->
+                        <div class="logo">
+                            <a href="index.html"><img src="" alt=""></a>
+                        </div>
+                        <!-- Main-menu -->
+                        <div class="main-menu f-right d-none d-lg-block">
+                            <nav>
+                                <ul id="navigation">
+                                   <li><a href="painel">Início</a></li>
+                                    <li><a href="courses.html">Desempenho</a></li>
+                                    <li><a href="peito">Treinos</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <!-- Header-btn -->
+                        <div class="header-btns d-none d-lg-block f-right">
+                       </div>
+                       <!-- Mobile Menu -->
+                       <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+</header>
+
+<main>
+    <!--? Hero Start -->
+    <div class="slider-area2">
+        <div class="slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap hero-cap2 pt-70">
+                            <h2>Criar Treino Personalizado</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero End -->
+
+    <!--? Blog Area Start-->
+    <section class="blog_area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mb-5 mb-lg-0">
+                    <h2 class="comments-count">Exercícios Disponíveis</h2>
+
+                    <div class="search-container">
+                        <input type="text" id="exercise-search" placeholder="Buscar exercício..." class="form-control">
+                    </div>
+
+                    <div class="mb-4">
+                        <h6>Filtrar por grupo muscular:</h6>
+                        <div>
+                            <button class="btn btn-sm filter-btn active" data-group="all">Todos</button>
+                            <button class="btn btn-sm filter-btn" data-group="peito">Peito</button>
+                            <button class="btn btn-sm filter-btn" data-group="costas">Costas</button>
+                            <button class="btn btn-sm filter-btn" data-group="pernas">Pernas</button>
+                            <button class="btn btn-sm filter-btn" data-group="alongamento">Alongamento</button>
+                            <button class="btn btn-sm filter-btn" data-group="bracos">Braços</button>
+                            <button class="btn btn-sm filter-btn" data-group="abdomen">Abdômen</button>
+                        </div>
+                    </div>
+
+                    <div class="row" id="exercises-container">
+                        <!-- Exercícios serão carregados aqui -->
+                    </div>
+                </div>
+
+                <!-- Workout Summary -->
+                <div class="col-lg-4">
+                    <div class="blog_right_sidebar">
+                        <aside class="single_sidebar_widget search_widget">
+                            <div class="workout-summary">
+                                <h3 class="widget_title">Seu Treino</h3>
+
+                                <div class="mb-4">
+                                    <input type="text" class="workout-title-input" placeholder="Nome do Treino" id="workout-name">
+                                </div>
+
+                                <div class="mb-4">
+                                    <h5>Exercícios Selecionados <span class="exercise-counter" id="exercise-counter">(0)</span></h5>
+                                    <div id="selected-exercises">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-save-workout" id="save-workout">
+                                    Salvar Treino
+                                </button>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Blog Area End -->
+</main>
+
+<footer>
+    <!--? Footer Start-->
+    <div class="footer-area black-bg">
+        <div class="container">
+            <div class="footer-top footer-padding">
+                <!-- Footer Menu -->
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="single-footer-caption mb-50 text-center">
+                            <!-- logo -->
+                            <div class="footer-logo wow fadeInUp" data-wow-duration="1s" data-wow-delay=".2s">
+                                <a href="index.html"><img src="static/assets/img/logo/logo2_footer.png" alt=""></a>
+                            </div>
+                            <!-- Menu -->
+                            <!-- Header Start -->
+                            <div class="header-area main-header2 wow fadeInUp" data-wow-duration="2s" data-wow-delay=".4s">
+                                <div class="main-header main-header2">
+                                    <div class="menu-wrapper menu-wrapper2">
+                                        <!-- Main-menu -->
+                                        <div class="main-menu main-menu2 text-center">
+                                            <nav>
+                                                <ul>
+                                                    <li><a href="index.html">Home</a></li>
+                                                    <li><a href="about.html">About</a></li>
+                                                    <li><a href="courses.html">Courses</a></li>
+                                                    <li><a href="pricing.html">Pricing</a></li>
+                                                    <li><a href="gallery.html">Gallery</a></li>
+                                                    <li><a href="contact.html">Contact</a></li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Header End -->
+                            <!-- social -->
+                            <div class="footer-social mt-30 wow fadeInUp" data-wow-duration="3s" data-wow-delay=".8s">
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="https://bit.ly/sai4ull"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="row d-flex align-items-center">
+                    <div class="col-lg-12">
+                        <div class="footer-copy-right text-center">
+                            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                              Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- Footer End-->
+  </footer>
+
+  <!-- Scroll Up -->
+  <div id="back-top" >
+    <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+</div>
+
+<!-- JS here -->
+<script src="static/assets/js/vendor/modernizr-3.5.0.min.js"></script>
+<!-- Jquery, Popper, Bootstrap -->
+<script src="static/assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="static/assets/js/popper.min.js"></script>
+<script src="static/assets/js/bootstrap.min.js"></script>
+<!-- Jquery Mobile Menu -->
+<script src="static/assets/js/jquery.slicknav.min.js"></script>
+
+<!-- Jquery Slick , Owl-Carousel Plugins -->
+<script src="static/assets/js/owl.carousel.min.js"></script>
+<script src="static/assets/js/slick.min.js"></script>
+<!-- One Page, Animated-HeadLin -->
+<script src="static/assets/js/wow.min.js"></script>
+<script src="static/assets/js/animated.headline.js"></script>
+
+<!-- Nice-select, sticky -->
+<script src="static/assets/js/jquery.nice-select.min.js"></script>
+<script src="static/assets/js/jquery.sticky.js"></script>
+<script src="static/assets/js/jquery.magnific-popup.js"></script>
+
+<!-- contact js -->
+<script src="static/assets/js/contact.js"></script>
+<script src="static/assets/js/jquery.form.js"></script>
+<script src="static/assets/js/jquery.validate.min.js"></script>
+<script src="static/assets/js/mail-script.js"></script>
+<script src="static/assets/js/jquery.ajaxchimp.min.js"></script>
+
+<!-- Jquery Plugins, main Jquery -->
+<script src="static/assets/js/plugins.js"></script>
+<script src="static/assets/js/main.js"></script>
+
+<script>
+    // Função para carregar exercícios do servidor
+    function loadExercises() {
+        $.ajax({
+            url: '/get_exercises',  // Rota que retorna os exercícios
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // Atualiza a lista de exercícios
+                exercises = data;
+                renderExercises(exercises);
+            },
+            error: function() {
+                alert('Erro ao carregar exercícios');
+            }
+        });
+    }
+
+    // Inicializar a página
+    $(document).ready(function() {
+        loadExercises();  // Carrega exercícios do servidor
+        setupEventListeners();
+    });
+
+
+    // Renderizar exercícios
+    function renderExercises(exerciseList) {
+        const container = $('#exercises-container');
+        container.empty();
+
+        if (exerciseList.length === 0) {
+            container.html('<div class="col-12"><div class="alert alert-info">Nenhum exercício encontrado com esse filtro.</div></div>');
+            return;
+        }
+
+        exerciseList.forEach(exercise => {
+            const exerciseCard = `
+                <div class="col-md-6" data-group="${exercise.muscleGroup}">
+                    <div class="card card-exercise">
+                        <div class="card-body">
+                            <h5 class="card-title">${exercise.nome}</h5>
+                            <p class="card-text">${exercise.descricao}</p>
+                            <p class="card-text"><strong>Equipamento:</strong> ${exercise.equipamento}</p>
+                            <p class="card-text"><strong>Grupo Muscular:</strong> <span class="muscle-group">${exercise.muscleGroup}</span></p>
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-add add-exercise" data-id="${exercise.id}">
+                                    Adicionar
+                                </button>
+                                <a href="${exercise.video}" target="_blank" class="btn btn-link">
+                                    Ver Vídeo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.append(exerciseCard);
+        });
+    }
+    const muscleGroupClasses = {
+    'Peito': 'badge-chest',
+    'Costas': 'badge-back',
+    'Perna': 'badge-legs',
+    'Alongamento': 'badge-stretch',  // Novo grupo
+    'Braço': 'badge-arms',
+    'Abdome': 'badge-core'
+};
+    // Configurar listeners de eventos
+    function setupEventListeners() {
+        // Busca de exercícios
+        $('#exercise-search').on('input', function() {
+            const searchTerm = $(this).val().toLowerCase();
+            const filtered = exercises.filter(exercise => {
+        // Usar os novos nomes de campos: 'nome' e 'descricao'
+                return exercise.nome.toLowerCase().includes(searchTerm) ||
+                    exercise.descricao.toLowerCase().includes(searchTerm);
+            });
+            renderExercises(filtered);
+        });
+
+        // Filtro por grupo muscular
+        $('.filter-btn').click(function() {
+    $('.filter-btn').removeClass('active');
+    $(this).addClass('active');
+
+    const group = $(this).data('group');
+    if (group === 'all') {
+        renderExercises(exercises);
+    } else {
+        // Mapear para os valores do banco
+        let dbGroup = group;
+        if (group === 'alongamento') dbGroup = 'Alongamento';
+        if (group === 'peito') dbGroup = 'Peito';
+        if (group === 'costas') dbGroup = 'Costas';
+        if (group === 'pernas') dbGroup = 'Perna';
+        if (group === 'bracos') dbGroup = 'Braço';
+        if (group === 'abdomen') dbGroup = 'Abdome';
+
+        const filtered = exercises.filter(exercise => exercise.muscleGroup === dbGroup);
+        renderExercises(filtered);
+    }
+});
+
+        // Adicionar exercício ao treino
+        $(document).on('click', '.add-exercise', function() {
+            const exerciseId = $(this).data('id');
+            const exercise = exercises.find(e => e.id === exerciseId);
+
+            if (exercise) {
+                addExerciseToWorkout(exercise);
+            }
+        });
+
+        // Remover exercício do treino
+        $(document).on('click', '.btn-remove', function() {
+            const exerciseId = $(this).data('id');
+            $(`#exercise-${exerciseId}`).remove();
+            updateExerciseCounter();
+        });
+
+        // Salvar treino
+        $('#save-workout').click(function() {
+            const workoutName = $('#workout-name').val().trim();
+            if (!workoutName) {
+                alert('Por favor, dê um nome ao seu treino');
+                return;
+            }
+
+            const selectedExercises = [];
+            $('.workout-item').each(function() {
+                selectedExercises.push($(this).data('id'));
+            });
+
+            if (selectedExercises.length === 0) {
+                alert('Adicione pelo menos um exercício ao treino');
+                return;
+            }
+
+            // Em uma aplicação real, isso enviaria os dados para o servidor
+            alert(`Treino "${workoutName}" salvo com sucesso com ${selectedExercises.length} exercícios!`);
+        });
+    }
+
+    // Adicionar exercício ao resumo do treino
+    function addExerciseToWorkout(exercise) {
+        const exerciseItem = `
+            <div class="workout-item" id="exercise-${exercise.id}" data-id="${exercise.id}">
+                <div>
+                    <strong>${exercise.nome}</strong>
+                    <div>${exercise.muscleGroup}</div>
+                </div>
+                <button class="btn-remove" data-id="${exercise.id}">
+                    Remover
+                </button>
+            </div>
+        `;
+
+        $('#selected-exercises').append(exerciseItem);
+        updateExerciseCounter();
+    }
+
+    // Atualizar contador de exercícios
+    function updateExerciseCounter() {
+        const count = $('.workout-item').length;
+        $('#exercise-counter').text(`(${count})`);
+    }
+</script>
+</body>
+</html>

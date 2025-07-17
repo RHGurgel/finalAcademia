@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Exercicios de Abdomen</title>
+    <title>Meus treinos</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.ico">
@@ -24,10 +24,7 @@
 </head>
 <body>
     <!--? Preloader Start -->
-                </div>
-            </div>
-        </div>
-    </div>
+
     <!-- Preloader Start -->
     <header>
         <!-- Header Start -->
@@ -70,7 +67,10 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="hero-cap hero-cap2 pt-70">
-                            <h2>Exercícios de Abdomen</h2>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h2>meus treinos</h2>
+                                <a href="criartreino" class="btn btn-primary">Criar novo treino</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -80,7 +80,10 @@
     <!-- Hero End -->
     <!--? Blog Area Start-->
 
-    <h2 class="comments-count">Exercícios de Abdomen</h2>
+
+    <h2 class="comments-count">
+        Todos os exercícios
+    </h2>
   <div class="reply-form">
 
     <table class="table">
@@ -101,7 +104,7 @@
             <td name ='descricao'>{{ x[2] }}</td>
             <td name ='equipamento'>{{ x[3] }}</td>
             <td name ='gpmuscular'>{{ x[4] }}</td>
-            <td name ='video'> <iframe width="560" height="315" src="{{ x[5] }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> </td>
+            <td name ='video'> <iframe width="560" height="315" src= "{{x[5]}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> </td>
 
           </tr>
         {% endfor %}
@@ -116,12 +119,8 @@
 
     <!-- Blog Area End -->
     <!-- ? services-area -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
+
 </main>
 <footer>
     <!--? Footer Start-->

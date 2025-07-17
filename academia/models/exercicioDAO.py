@@ -112,6 +112,7 @@ class ExercicioDAO:
         except:
             return None
 
+
     def listar_exercicios(self):
         try:
             cursor = self.con.cursor()
@@ -121,3 +122,4 @@ class ExercicioDAO:
         except Exception as e:
             print(f"Erro ao listar exercícios: {e}")
             return []
+

@@ -316,6 +316,7 @@ def treinos():
     exercicio_db = dao.listar_exercicios()
     return render_template("treinos.html", titulo="treinos", exercicio=exercicio_db)
 
+
 @app.route('/criartreino', methods=['GET', 'POST'])
 def criartreino():
     return render_template("criar_treino.html", titulo="criartreino")
@@ -347,6 +348,7 @@ def get_exercises():
     except Exception as e:
         print(f"Erro: {e}")
         return jsonify([])
+
 
 if __name__=='__main__':
     app.run(host="0.0.0.0", port=80, debug=True)

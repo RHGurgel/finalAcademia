@@ -338,10 +338,6 @@ def treinos():
 def criartreino():
     return render_template("criar_treino.html", titulo="criartreino")
 
-
-
-
-
 @app.route('/get_exercises')
 def get_exercises():
     try:

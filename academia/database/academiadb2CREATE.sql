@@ -317,68 +317,17 @@ CREATE TABLE LogAvaliacoes
     id_log               INT AUTO_INCREMENT PRIMARY KEY,
     data_acao            TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     tipo_acao            ENUM('CRIAÇÃO', 'EDIÇÃO', 'EXCLUSÃO') NOT NULL,
-    id_usuario_autor     BIGINT, -- Usando BIGINT para ser compatível
-    id_avaliacao_afetada BIGINT, -- Usando BIGINT
+
+    id_usuario_autor     BIGINT,
+    id_avaliacao_afetada BIGINT,
     dados_antes          JSON,
     dados_depois         JSON,
 
-    -- AQUI ESTÁ A CORREÇÃO: Removemos o "ON DELETE CASCADE"
+
     FOREIGN KEY (id_usuario_autor) REFERENCES Usuarios (codigous),
     FOREIGN KEY (id_avaliacao_afetada) REFERENCES Avaliacao (codigoav)
 );
 
--- Criar gatilhos
-DELIMITER
-$$
-CREATE TRIGGER log_after_avaliacao_insert
-    AFTER INSERT
-    ON Avaliacao
-    FOR EACH ROW
-BEGIN
-    INSERT INTO LogAvaliacoes (tipo_acao, id_avaliacao_afetada, id_usuario_autor, dados_antes, dados_depois)
-    VALUES ('CRIAÇÃO', NEW.codigoav, @app_user_id, NULL,
-            JSON_OBJECT('peso', NEW.peso, 'altura', NEW.altura, 'braco', NEW.braco, 'ombro', NEW.ombro, 'peito',
-                        NEW.peito, 'cintura', NEW.cintura, 'quadril', NEW.quadril, 'abdominal', NEW.abdominal,
-                        'coxaMedial', NEW.coxaMedial, 'panturrilha', NEW.panturrilha));
-    END$$
-    DELIMITER ;
-
--- GATILHO PARA EDIÇÃO (UPDATE) em Avaliacao
-DELIMITER $$
-    CREATE TRIGGER log_after_avaliacao_update
-        AFTER UPDATE
-        ON Avaliacao
-        FOR EACH ROW
-    BEGIN
-        INSERT INTO LogAvaliacoes (tipo_acao, id_avaliacao_afetada, id_usuario_autor, dados_antes, dados_depois)
-        VALUES ('EDIÇÃO', NEW.codigoav, @app_user_id,
-                JSON_OBJECT('peso', OLD.peso, 'altura', OLD.altura, 'braco', OLD.braco, 'ombro', OLD.ombro, 'peito',
-                            OLD.peito, 'cintura', OLD.cintura, 'quadril', OLD.quadril, 'abdominal', OLD.abdominal,
-                            'coxaMedial', OLD.coxaMedial, 'panturrilha', OLD.panturrilha),
-                JSON_OBJECT('peso', NEW.peso, 'altura', NEW.altura, 'braco', NEW.braco, 'ombro', NEW.ombro, 'peito',
-                            NEW.peito, 'cintura', NEW.cintura, 'quadril', NEW.quadril, 'abdominal', NEW.abdominal,
-                            'coxaMedial', NEW.coxaMedial, 'panturrilha', NEW.panturrilha));
-        END$$
-        DELIMITER ;
---função
-    DELIMITER $$
-        CREATE FUNCTION `Fn_CalcularIMC`(
-            peso DECIMAL (5, 2),
-            altura DECIMAL (3, 2)
-        )
-            RETURNS DECIMAL(5, 2)
-            DETERMINISTIC
-        BEGIN
-    -- Retorna 0 se a altura for nula ou zero para evitar erros
-    IF
-        altura IS NULL OR altura <= 0 THEN
-        RETURN 0;
-    END IF;
-
-    -- Fórmula do IMC
-    RETURN peso / (altura * altura);
-    END$$
-    DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

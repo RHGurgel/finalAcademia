@@ -317,6 +317,7 @@ CREATE TABLE LogAvaliacoes
     id_log               INT AUTO_INCREMENT PRIMARY KEY,
     data_acao            TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     tipo_acao            ENUM('CRIAÇÃO', 'EDIÇÃO', 'EXCLUSÃO') NOT NULL,
+
     id_usuario_autor     BIGINT,
     id_avaliacao_afetada BIGINT,
     dados_antes          JSON,
@@ -326,6 +327,7 @@ CREATE TABLE LogAvaliacoes
     FOREIGN KEY (id_usuario_autor) REFERENCES Usuarios (codigous),
     FOREIGN KEY (id_avaliacao_afetada) REFERENCES Avaliacao (codigoav)
 );
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

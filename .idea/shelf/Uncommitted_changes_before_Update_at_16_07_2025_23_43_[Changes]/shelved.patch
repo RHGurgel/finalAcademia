@@ -1,0 +1,170 @@
+Index: academia/main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from flask import Flask, g, render_template,\\\r\n    request, redirect, url_for, flash, session, make_response\r\n\r\n\r\nimport hashlib\r\nimport os\r\nimport mysql.connector\r\nimport requests, json\r\n\r\nos.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'\r\n\r\n\r\nfrom models.usuario import Usuario\r\nfrom models.usuarioDAO import UsuarioDAO\r\nfrom models.exercicio import exercicio\r\nfrom models.exercicioDAO import ExercicioDAO\r\nfrom models.avaliacao import Avaliacao\r\nfrom models.avaliacaoDAO import AvaliacaoDAO\r\n\r\napp = Flask(__name__)\r\napp.secret_key = \"senha123\"\r\n\r\nDB_HOST = \"localhost\"\r\nDB_USER = \"root\"\r\nDB_NAME = \"academiadb\"\r\nDB_PASS = \"\"\r\n\r\napp.auth = {\r\n    # acao: { perfil:permissao }\r\n    'painel': {0:1, 1:1},\r\n    'logout': {0:1, 1:1},\r\n    'cadastrar_exercicio': {0:1, 1:1},\r\n    'listar_exercicio': {0:1, 1:1},\r\n    'cadastrar_saida': {0:1, 1:1}\r\n}\r\n\r\n@app.before_request\r\ndef autorizacao():\r\n    acao = request.path[1:]\r\n    acao = acao.split('/')\r\n    if len(acao)>=1:\r\n        acao = acao[0]\r\n\r\n    acoes = app.auth.keys()\r\n    if acao in list(acoes):\r\n        if session.get('logado') is None:\r\n            return redirect(url_for('login'))\r\n        else:\r\n            tipo = session['logado']\r\n            if app.auth[acao] == 0:\r\n                return redirect(url_for('painel'))\r\n\r\ndef get_db():\r\n    db = getattr(g, '_database', None)\r\n    if db is None:\r\n        db = g._database = mysql.connector.connect(\r\n            host=DB_HOST,\r\n            user=DB_USER,\r\n            password=DB_PASS,\r\n            database=DB_NAME\r\n        )\r\n    return db\r\n\r\n\r\n@app.teardown_appcontext\r\ndef close_connection(exception):\r\n    db = getattr(g, '_database', None)\r\n    if db is not None:\r\n        db.close()\r\n\r\n\r\n@app.route('/')\r\ndef index():\r\n    return render_template(\"login.html\")\r\n\r\n\r\n@app.route('/register', methods=['GET', 'POST'])\r\ndef register():\r\n    msg = ''\r\n    if request.method == \"POST\":\r\n        # valor = request.form['campoHTML']\r\n        nome = request.form['nome']\r\n        sobrenome = request.form['sobrenome']\r\n        email = request.form['email']\r\n        senha = request.form['senha']\r\n\r\n        usuario = Usuario(nome, sobrenome, email, senha)\r\n\r\n        dao = UsuarioDAO(get_db())\r\n        codigo = dao.inserir(usuario)\r\n\r\n        if codigo > 0:\r\n            msg = (\"Cadastrado com sucesso!\")\r\n        else:\r\n            msg = (\"Erro ao cadastrar!\")\r\n\r\n    vartitulo = \"Cadastro\"\r\n    return render_template(\"register.html\", titulo=vartitulo, msg=msg)\r\n\r\n\r\n@app.route('/cadastrar_treino', methods=['GET', 'POST'])\r\ndef cadastrar_exercicios():\r\n    if request.method == \"POST\":\r\n        carga = request.form['carga']\r\n        series = request.form['series']\r\n        repeticoes = request.form['repeticoes']\r\n\r\n        exercicios = exercicio(carga, series, repeticoes)\r\n\r\n        dao = ExercicioDAO(get_db())\r\n        codigo = dao.inserir(exercicios)\r\n\r\n        if codigo > 0:\r\n            flash(\"Cadastrado com sucesso! Código %d\" % codigo, \"success\")\r\n        else:\r\n            flash(\"Erro ao cadastrar!\", \"danger\")\r\n\r\n    vartitulo = \"Cadastro de Exercicio\"\r\n    return render_template(\"exercicio-cadastrar.html\", titulo=vartitulo)\r\n\r\n@app.route('/avaliacao', methods=['GET', 'POST'])\r\ndef avaliacao():\r\n    if request.method == \"POST\":\r\n        peso = request.form['peso']\r\n        altura = request.form['altura']\r\n        braco = request.form['braco']\r\n        ombro = request.form['ombro']\r\n        peito = request.form['peito']\r\n        cintura = request.form['cintura']\r\n        quadril = request.form['quadril']\r\n        abdominal = request.form['abdominal']\r\n        coxaMedial = request.form['coxaMedial']\r\n        panturrilha = request.form['panturrilha']\r\n\r\n        avaliacao = Avaliacao(peso, altura, braco, ombro, peito, cintura, quadril,\r\n                              abdominal, coxaMedial, panturrilha,session['logado']['codigo'] )\r\n\r\n        dao = AvaliacaoDAO(get_db())\r\n        codigo = dao.inserir(avaliacao)\r\n\r\n        if codigo > 0:\r\n            flash(\"Cadastrado com sucesso! Código %d\" % codigo, \"success\")\r\n        else:\r\n            flash(\"Erro ao cadastrar!\", \"danger\")\r\n\r\n    vartitulo = \"Avaliacao\"\r\n    return render_template(\"avaliacao.html\", titulo=vartitulo)\r\n\r\n@app.route('/listar_exercicio', methods=['GET',])\r\ndef listar_exercicio():\r\n    dao = ExercicioDAO(get_db())\r\n    exercicios_db = dao.listar()\r\n    return render_template(\"exercicio-listar.html\", exercicios=exercicios_db)\r\n\r\n@app.route('/listaraval', methods=['GET', 'POST'])\r\ndef listaraval():\r\n    dao = AvaliacaoDAO(get_db())\r\n    avaliacao_db = dao.listar()\r\n    return render_template(\"listaraval.html\", avaliacao=avaliacao_db)\r\n\r\n@app.route('/cadastrar_saida', methods=['GET', 'POST'])\r\ndef cadastrar_saida():\r\n    daoUsuario = UsuarioDAO(get_db())\r\n    daoPlanta = PlantaDAO(get_db())\r\n\r\n    if request.method == \"POST\":\r\n\r\n        dtsaida = request.form['dtsaida']\r\n        usuario = request.form['usuario']\r\n        planta = request.form['planta']\r\n        saida = Saida(usuario, planta, dtsaida)\r\n\r\n        daoSaida = SaidaDAO(get_db())\r\n        codigo = daoSaida.inserir(saida)\r\n        if codigo > 0:\r\n            flash(\"Saída cadastrada com sucesso! Código %d\" % codigo, \"success\")\r\n        else:\r\n            flash(\"Erro ao registrar saída!\", \"danger\")\r\n\r\n\r\n    usuarios_db = daoUsuario.listar()\r\n    plantas_db = daoPlanta.listar()\r\n    return render_template(\"saida-cadastrar.html\",\r\n                           usuarios=usuarios_db, plantas=plantas_db)\r\n\r\n\r\n@app.route('/login', methods=['GET', 'POST'])\r\ndef login():\r\n    if request.method == \"POST\":\r\n        email = request.form[\"email\"]\r\n        senha = request.form[\"senha\"]\r\n\r\n        # Verificar dados\r\n        dao = UsuarioDAO(get_db())\r\n        usuario = dao.autenticar(email, senha)\r\n\r\n        if usuario is not None:\r\n            session['logado'] = {\r\n                'codigo': usuario[0],\r\n                'nome': usuario[3],\r\n                'email': usuario[1],\r\n            }\r\n            return redirect(url_for('painel'))\r\n        else:\r\n            flash(\"Erro ao efetuar login!\")\r\n\r\n    return render_template(\"login.html\", titulo=\"Login\")\r\n\r\n\r\n@app.route('/logout')\r\ndef logout():\r\n    session['logado'] = None\r\n    session.clear()\r\n    return redirect(url_for('index'))\r\n\r\n@app.route('/forgot')\r\ndef forgot():\r\n    return render_template(\"forgot-password.html\", titulo =\"Esqueci minha senha\")\r\n\r\n@app.route('/painel')\r\ndef painel():\r\n    return render_template(\"index.html\", titulo=\"index\")\r\n\r\n@app.route('/peito', methods=['GET', 'POST'])\r\ndef peito():\r\n    dao = ExercicioDAO(get_db())\r\n    exercicio_db = dao.listar_peito()\r\n    exercicio = list(exercicio_db)\r\n    print(exercicio)\r\n\r\n    video_url = [0, \"https://www.youtube.com/embed/R08gYyypGto?si=ugbVi8tG0J354KOq\"]\r\n    return render_template(\"peito.html\", titulo=\"peito\", exercicio=exercicio, video_url = video_url)\r\n\r\n@app.route('/perna', methods=['GET', 'POST'])\r\ndef perna():\r\n    dao = ExercicioDAO(get_db())\r\n    exercicio_db = dao.listar_perna()\r\n    return render_template(\"perna.html\", titulo=\"perna\", exercicio=exercicio_db)\r\n\r\n@app.route('/braco', methods=['GET', 'POST'])\r\ndef braco():\r\n    dao = ExercicioDAO(get_db())\r\n    exercicio_db = dao.listar_braco()\r\n    return render_template(\"braco.html\", titulo=\"braco\", exercicio=exercicio_db)\r\n\r\n@app.route('/costas', methods=['GET', 'POST'])\r\ndef costas():\r\n    dao = ExercicioDAO(get_db())\r\n    exercicio_db = dao.listar_costas()\r\n    return render_template(\"costas.html\", titulo=\"costas\", exercicio=exercicio_db)\r\n\r\n@app.route('/abdomen', methods=['GET', 'POST'])\r\ndef abdomen():\r\n    dao = ExercicioDAO(get_db())\r\n    exercicio_db = dao.listar_abdomen()\r\n    return render_template(\"abdomen.html\", titulo=\"abdomen\", exercicio=exercicio_db)\r\n\r\n@app.route('/alongamento', methods=['GET', 'POST'])\r\ndef alongamento():\r\n    dao = ExercicioDAO(get_db())\r\n    exercicio_db = dao.listar_alongamento()\r\n    return render_template(\"alongamento.html\", titulo=\"alongamento\", exercicio=exercicio_db)\r\n\r\n@app.route('/mainaval')\r\ndef mainaval():\r\n    return render_template(\"mainaval.html\", titulo=\"mainaval\")\r\n\r\n@app.route('/atualizar_avaliacao/<int:id>', methods=['POST'])\r\ndef atualizar_avaliacao(id):\r\n    if request.method == \"POST\":\r\n        peso = request.form['peso']\r\n        altura = request.form['altura']\r\n        braco = request.form['braco']\r\n        ombro = request.form['ombro']\r\n        peito = request.form['peito']\r\n        cintura = request.form['cintura']\r\n        quadril = request.form['quadril']\r\n        abdominal = request.form['abdominal']\r\n        coxaMedial = request.form['coxaMedial']\r\n        panturrilha = request.form['panturrilha']\r\n\r\n        from models.avaliacao import Avaliacao\r\n        from models.avaliacaoDAO import AvaliacaoDAO\r\n\r\n        avaliacao = Avaliacao(\r\n            peso, altura, braco, ombro, peito, cintura, quadril,\r\n            abdominal, coxaMedial, panturrilha, session['logado']['codigo']\r\n        )\r\n\r\n        dao = AvaliacaoDAO(get_db())\r\n        sucesso = dao.atualizar(avaliacao, id)\r\n\r\n        if sucesso:\r\n            flash(\"Avaliação atualizada com sucesso!\", \"success\")\r\n        else:\r\n            flash(\"Erro ao atualizar a avaliação!\", \"danger\")\r\n\r\n    return redirect(url_for('listaraval'))\r\n\r\n\r\n@app.route('/deletar_avaliacao/<int:id>')\r\ndef deletar_avaliacao(id):\r\n    dao = AvaliacaoDAO(get_db())\r\n    sucesso = dao.deletar(id)\r\n\r\n    if sucesso:\r\n        flash(\"Avaliação deletada com sucesso!\", \"success\")\r\n    else:\r\n        flash(\"Erro ao deletar avaliação!\", \"danger\")\r\n\r\n    return redirect(url_for('listaraval'))\r\n\r\n@app.route('/treinos', methods=['GET', 'POST'])\r\ndef treinos():\r\n    dao = ExercicioDAO(get_db())\r\n    exercicio_db = dao.listar_exercicios()\r\n    return render_template(\"treinos.html\", titulo=\"treinos\", exercicio=exercicio_db)\r\n\r\nif __name__=='__main__':\r\n    app.run(host=\"0.0.0.0\", port=80, debug=True)
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/academia/main.py b/academia/main.py
+--- a/academia/main.py	(revision 535752833d00841cd1b0b51122a7f497013ee461)
++++ b/academia/main.py	(date 1752717630169)
+@@ -23,7 +23,7 @@
+ DB_HOST = "localhost"
+ DB_USER = "root"
+ DB_NAME = "academiadb"
+-DB_PASS = ""
++DB_PASS = "Rcbcs2006!"
+ 
+ app.auth = {
+     # acao: { perfil:permissao }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"f574b97e-b19f-483e-b6b8-0477184b7737\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/finalAcademia.iml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/modules.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/academia/static/assets/img/gallery/team1.jpg\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/academia/templates/treinos.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/misc.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/misc.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/runConfigurations/main.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/runConfigurations/main.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/database/academiadb2CREATE.sql\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/database/academiadb2CREATE.sql\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/main.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/main.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/models/exercicioDAO.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/models/exercicioDAO.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/static/assets/css/sb-admin-2.min.css\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/static/assets/css/sb-admin-2.min.css\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/static/assets/css/style.css\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/static/assets/css/style.css\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/static/assets/img/gallery/h1_hero.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/static/assets/img/gallery/team1.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/static/assets/img/gallery/team2.png\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/static/assets/img/gallery/team2.png\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/static/assets/img/gallery/team3.png\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/static/assets/img/gallery/team3.png\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/static/assets/img/hero/h1_hero.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/static/assets/img/hero/hero2.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/static/assets/img/homivermelho.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/static/assets/img/muievermelha.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/static/assets/js/generatepdf.js\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/static/assets/js/generatepdf.js\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/templates/abdomen.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/templates/abdomen.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/templates/about.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/templates/about.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/templates/alongamento.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/templates/alongamento.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/templates/costas.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/templates/costas.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/templates/courses.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/templates/courses.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/templates/index.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/templates/index.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/templates/listaraval.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/templates/listaraval.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/academia/templates/perna.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/academia/templates/perna.html\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n        <option value=\"HTML File\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"FlaskConsoleOptions\" custom-start-script=\"import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass\">\r\n    <envs>\r\n      <env key=\"FLASK_APP\" value=\"app\" />\r\n    </envs>\r\n    <option name=\"myCustomStartScript\" value=\"import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass\" />\r\n    <option name=\"myEnvs\">\r\n      <map>\r\n        <entry key=\"FLASK_APP\" value=\"app\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\"><![CDATA[{\r\n  \"lastFilter\": {\r\n    \"state\": \"OPEN\",\r\n    \"assignee\": \"Renixon-Christian\"\r\n  }\r\n}]]></component>\r\n  <component name=\"GithubPullRequestsUISettings\"><![CDATA[{\r\n  \"selectedUrlAndAccountId\": {\r\n    \"url\": \"https://github.com/FaelPressao/finalAcademia.git\",\r\n    \"accountId\": \"ceebd5b8-c462-41ed-bbc3-d215a4f61dec\"\r\n  }\r\n}]]></component>\r\n  <component name=\"ProjectColorInfo\"><![CDATA[{\r\n  \"associatedIndex\": 8\r\n}]]></component>\r\n  <component name=\"ProjectId\" id=\"2RFE5HUxVMsGfr7GWfoz9eAV4RU\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"DefaultHtmlFileTemplate\": \"HTML File\",\r\n    \"Python.main.executor\": \"Run\",\r\n    \"RunOnceActivity.git.unshallow\": \"true\",\r\n    \"git-widget-placeholder\": \"main\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\20201084010012\\Downloads\\academia_rafael\\academia\\templates\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\20201084010012\\Downloads\\academia_rafael\\academia\\models\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-PY-251.26927.74\" />\r\n        <option value=\"bundled-python-sdk-657d8234b839-64d779b69b7a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.26927.74\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"f574b97e-b19f-483e-b6b8-0477184b7737\" name=\"Changes\" comment=\"\" />\r\n      <created>1686837245144</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1686837245144</updated>\r\n      <workItem from=\"1752665167840\" duration=\"8125000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"UnknownFeatures\">\r\n    <option featureType=\"com.intellij.fileTypeFactory\" implementationName=\"*.js\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 535752833d00841cd1b0b51122a7f497013ee461)
++++ b/.idea/workspace.xml	(date 1752717630218)
+@@ -4,37 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="f574b97e-b19f-483e-b6b8-0477184b7737" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/.idea/finalAcademia.iml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/academia/static/assets/img/gallery/team1.jpg" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/academia/templates/treinos.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/database/academiadb2CREATE.sql" beforeDir="false" afterPath="$PROJECT_DIR$/academia/database/academiadb2CREATE.sql" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/main.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/models/exercicioDAO.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/models/exercicioDAO.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/static/assets/css/sb-admin-2.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/academia/static/assets/css/sb-admin-2.min.css" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/static/assets/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/academia/static/assets/css/style.css" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/gallery/h1_hero.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/gallery/team1.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/gallery/team2.png" beforeDir="false" afterPath="$PROJECT_DIR$/academia/static/assets/img/gallery/team2.png" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/gallery/team3.png" beforeDir="false" afterPath="$PROJECT_DIR$/academia/static/assets/img/gallery/team3.png" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/hero/h1_hero.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/hero/hero2.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/homivermelho.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/muievermelha.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/static/assets/js/generatepdf.js" beforeDir="false" afterPath="$PROJECT_DIR$/academia/static/assets/js/generatepdf.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/templates/abdomen.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/abdomen.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/templates/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/about.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/templates/alongamento.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/alongamento.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/templates/costas.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/costas.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/templates/courses.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/courses.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/index.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/templates/listaraval.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/listaraval.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/academia/templates/perna.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/perna.html" afterDir="false" />
+-    </list>
++    <list default="true" id="f574b97e-b19f-483e-b6b8-0477184b7737" name="Changes" comment="" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -46,37 +16,11 @@
+         <option value="Python Script" />
+         <option value="HTML File" />
+       </list>
+-    </option>
+-  </component>
+-  <component name="FlaskConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass">
+-    <envs>
+-      <env key="FLASK_APP" value="app" />
+-    </envs>
+-    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass" />
+-    <option name="myEnvs">
+-      <map>
+-        <entry key="FLASK_APP" value="app" />
+-      </map>
+     </option>
+   </component>
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+-  "lastFilter": {
+-    "state": "OPEN",
+-    "assignee": "Renixon-Christian"
+-  }
+-}]]></component>
+-  <component name="GithubPullRequestsUISettings"><![CDATA[{
+-  "selectedUrlAndAccountId": {
+-    "url": "https://github.com/FaelPressao/finalAcademia.git",
+-    "accountId": "ceebd5b8-c462-41ed-bbc3-d215a4f61dec"
+-  }
+-}]]></component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "associatedIndex": 8
+-}]]></component>
+   <component name="ProjectId" id="2RFE5HUxVMsGfr7GWfoz9eAV4RU" />
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+@@ -84,15 +28,7 @@
+   </component>
+   <component name="PropertiesComponent"><![CDATA[{
+   "keyToString": {
+-    "DefaultHtmlFileTemplate": "HTML File",
+-    "Python.main.executor": "Run",
+-    "RunOnceActivity.git.unshallow": "true",
+-    "git-widget-placeholder": "main",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)",
+-    "nodejs_package_manager_path": "npm",
+-    "vue.rearranger.settings.migration": "true"
++    "node.js.selected.package.tslint": "(autodetect)"
+   }
+ }]]></component>
+   <component name="RecentsManager">
+@@ -102,14 +38,6 @@
+     <key name="MoveFile.RECENT_KEYS">
+       <recent name="C:\Users\20201084010012\Downloads\academia_rafael\academia\models" />
+     </key>
+-  </component>
+-  <component name="SharedIndexes">
+-    <attachedChunks>
+-      <set>
+-        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-PY-251.26927.74" />
+-        <option value="bundled-python-sdk-657d8234b839-64d779b69b7a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.26927.74" />
+-      </set>
+-    </attachedChunks>
+   </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+@@ -119,12 +47,8 @@
+       <option name="number" value="Default" />
+       <option name="presentableId" value="Default" />
+       <updated>1686837245144</updated>
+-      <workItem from="1752665167840" duration="8125000" />
+     </task>
+     <servers />
+-  </component>
+-  <component name="TypeScriptGeneratedFilesManager">
+-    <option name="version" value="3" />
+   </component>
+   <component name="UnknownFeatures">
+     <option featureType="com.intellij.fileTypeFactory" implementationName="*.js" />
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"VcsDirectoryMappings\">\r\n    <mapping directory=\"$PROJECT_DIR$\" vcs=\"Git\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+--- a/.idea/vcs.xml	(revision 535752833d00841cd1b0b51122a7f497013ee461)
++++ b/.idea/vcs.xml	(date 1752720057823)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="VcsDirectoryMappings">
+-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++    <mapping directory="" vcs="Git" />
+   </component>
+ </project>
+\ No newline at end of file

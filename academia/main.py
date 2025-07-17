@@ -298,6 +298,23 @@ def atualizar_avaliacao(id):
     return redirect(url_for('listaraval'))
 
 
+@app.route('/teste-log')
+def pagina_de_teste_log():
+    print("\n--- ACESSANDO A ROTA DE TESTE /teste-log ---")
+
+    db = get_db()
+    dao = AvaliacaoDAO(db)
+
+    print("1. Buscando dados na DAO...")
+    resultados = dao.buscar_todas_avaliacoes_com_log()
+
+    # Este print é crucial! Ele vai nos mostrar os dados brutos no terminal.
+    print("2. Dados recebidos da DAO:")
+    print(resultados)
+
+    print("3. Renderizando o template 'teste.html'...")
+    return render_template('teste.html', avaliacoes=resultados)
+
 @app.route('/deletar_avaliacao/<int:id>')
 def deletar_avaliacao(id):
     dao = AvaliacaoDAO(get_db())

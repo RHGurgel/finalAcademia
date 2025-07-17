@@ -5,8 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f574b97e-b19f-483e-b6b8-0477184b7737" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/academia/database/funçoes.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/academia/database/gatilhos.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/academia/database/regra.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/database/academiadb2CREATE.sql" beforeDir="false" afterPath="$PROJECT_DIR$/academia/database/academiadb2CREATE.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/models/avaliacaoDAO.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/models/avaliacaoDAO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/models/exercicioDAO.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/models/exercicioDAO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/gallery/h1_hero.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/gallery/team1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/hero/h1_hero.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/hero/hero2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/homivermelho.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/static/assets/img/muievermelha.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/academia/templates/listaraval.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/listaraval.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/treinos.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/treinos.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +80,8 @@
       <option name="presentableId" value="Default" />
       <updated>1686837245144</updated>
       <workItem from="1752665167840" duration="8125000" />
+      <workItem from="1752753225076" duration="2556000" />
+      <workItem from="1752761816104" duration="11682000" />
     </task>
     <servers />
   </component>

@@ -25,14 +25,30 @@
                 display: none !important;
             }
         }
+
+        .imc-value {
+            font-weight: bold;
+        }
+
+        .imc-classification {
+            font-size: 0.8em;
+            color: #6c757d;
+        }
+
+        .invalid-data {
+            color: #dc3545;
+            font-style: italic;
+        }
+
+        .log-date {
+            white-space: nowrap;
+        }
     </style>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<body>
 <div id="content-to-print">
-    <body>
-
     <div class="container">
-
         <h1 class="mb-4 text-center">Minhas Avaliações</h1>
 
         <div class="table-responsive">
@@ -41,6 +57,7 @@
                 <tr>
                     <th>Peso (kg)</th>
                     <th>Altura (m)</th>
+                    <th>IMC</th>
                     <th>Braço (cm)</th>
                     <th>Ombro (cm)</th>
                     <th>Peito (cm)</th>
@@ -56,9 +73,41 @@
                 <tbody>
                 {% if avaliacao %}
                     {% for p in avaliacao %}
-                        <tr data-codigo="{{ p[0] }}"> <!-- Atributo para armazenar o ID -->
+                        <tr data-codigo="{{ p[0] }}">
                             <td>{{ p[1] }}</td>
                             <td>{{ p[2] }}</td>
+                            <td>
+                                {% if p[1] is not none and p[2] is not none %}
+                                    {% set peso = p[1]|float|default(0) %}
+                                    {% set altura = p[2]|float|default(0) %}
+                                    {% if altura > 0 %}
+                                        {% set imc = peso / (altura * altura) %}
+                                        <span class="imc-value">
+                                            {{ "%.2f"|format(imc) }}
+                                        </span>
+                                        <br>
+                                        <span class="imc-classification">
+                                            {% if imc < 18.5 %}
+                                                Abaixo do peso
+                                            {% elif imc < 25 %}
+                                                Peso normal
+                                            {% elif imc < 30 %}
+                                                Sobrepeso
+                                            {% elif imc < 35 %}
+                                                Obesidade Grau I
+                                            {% elif imc < 40 %}
+                                                Obesidade Grau II
+                                            {% else %}
+                                                Obesidade Grau III
+                                            {% endif %}
+                                        </span>
+                                    {% else %}
+                                        <span class="invalid-data">Altura inválida</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="invalid-data">Dados incompletos</span>
+                                {% endif %}
+                            </td>
                             <td>{{ p[3] }}</td>
                             <td>{{ p[4] }}</td>
                             <td>{{ p[5] }}</td>
@@ -67,15 +116,21 @@
                             <td>{{ p[8] }}</td>
                             <td>{{ p[9] }}</td>
                             <td>{{ p[10] }}</td>
+                            <
                             <td class="text-center">
-                                {% if p.ultima_data %}
-                                    <small>
-                                        {{ p.ultima_data.strftime('%d/%m/%Y %H:%M') }}<br>
+                                {% if p[11] %}
+                                    <small class="log-date">
+                                        {% if p[11] is string %}
+                                            {{ p[11] }}
+                                        {% else %}
+                                            {{ p[11]|string }}  <!-- Fallback: converte para string -->
+                                        {% endif %}
+                                        <br>
                                         <span class="badge
-                {% if p.ultimo_tipo == 'CRIAÇÃO' %} bg-success
-                {% elif p.ultimo_tipo == 'EDIÇÃO' %} bg-warning text-dark
+                {% if p[12] == 'CRIAÇÃO' %} bg-success
+                {% elif p[12] == 'EDIÇÃO' %} bg-warning text-dark
                 {% else %} bg-secondary {% endif %}">
-                {{ p.ultimo_tipo }}
+                {{ p[12] if p[12] else 'SEM REGISTRO' }}
             </span>
                                     </small>
                                 {% else %}
@@ -83,12 +138,8 @@
                                 {% endif %}
                             </td>
                             <td class="no-print">
-
-                                <button
-                                        type="button"
-                                        class="btn btn-sm btn-warning btn-editar"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalEditar"
+                                <button type="button" class="btn btn-sm btn-warning btn-editar"
+                                        data-bs-toggle="modal" data-bs-target="#modalEditar"
                                         data-id="{{ p[0] }}"
                                         data-peso="{{ p[1] }}"
                                         data-altura="{{ p[2] }}"
@@ -99,33 +150,29 @@
                                         data-quadril="{{ p[7] }}"
                                         data-abdominal="{{ p[8] }}"
                                         data-coxa="{{ p[9] }}"
-                                        data-panturrilha="{{ p[10] }}"
-                                >Editar
+                                        data-panturrilha="{{ p[10] }}">
+                                    Editar
                                 </button>
-
-                                <button type="button" class="btn btn-sm btn-danger btn-deletar" data-bs-toggle="modal"
-                                        data-bs-target="#modalExcluir"
-                                        data-id="{{ p[0] }}"
-                                >Deletar
+                                <button type="button" class="btn btn-sm btn-danger btn-deletar"
+                                        data-bs-toggle="modal" data-bs-target="#modalExcluir"
+                                        data-id="{{ p[0] }}">
+                                    Deletar
                                 </button>
-
                             </td>
                         </tr>
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="12">Nenhum item foi encontrado</td>
+                        <td colspan="14">Nenhum item foi encontrado</td>
                     </tr>
                 {% endif %}
                 </tbody>
             </table>
             <button id="generatePDF" class="btn btn-info no-print">Exportar PDF</button>
-            <script src="/static/assets/js/generatepdf.js" defer></script>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
+    <!-- Modal Editar -->
     <div class="modal fade no-print" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -135,8 +182,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formEditar" method="POST"><input type="hidden" name="id_avaliacao" id="editId">
-
+                    <form id="formEditar" method="POST">
+                        <input type="hidden" name="id_avaliacao" id="editId">
                         <div class="mb-3">
                             <label for="editPeso" class="form-label">Peso (kg)</label>
                             <input type="number" step="0.01" class="form-control" id="editPeso" name="peso" required>
@@ -183,7 +230,6 @@
                             <input type="number" step="0.1" class="form-control" id="editPanturrilha" name="panturrilha"
                                    required>
                         </div>
-
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
@@ -194,6 +240,7 @@
         </div>
     </div>
 
+    <!-- Modal Excluir -->
     <div class="modal fade no-print" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -212,61 +259,44 @@
             </div>
         </div>
     </div>
-
-
-    <script>
-        const modalEditar = document.getElementById('modalEditar');
-        modalEditar.addEventListener('show.bs.modal', function (event) {
-            // Botão que acionou o modal
-            const button = event.relatedTarget;
-
-            // Extrai os dados dos atributos data-* do botão
-            const id = button.getAttribute('data-id');
-            console.log("ID do registro que será editado:", id);
-            const peso = button.getAttribute('data-peso');
-            const altura = button.getAttribute('data-altura');
-            const braco = button.getAttribute('data-braco');
-            const ombro = button.getAttribute('data-ombro');
-            const peito = button.getAttribute('data-peito');
-            const cintura = button.getAttribute('data-cintura');
-            const quadril = button.getAttribute('data-quadril');
-            const abdominal = button.getAttribute('data-abdominal');
-            const coxa = button.getAttribute('data-coxa');
-            const panturrilha = button.getAttribute('data-panturrilha');
-
-            // Atualiza os campos do formulário no modal com os dados extraídos
-            const modalForm = modalEditar.querySelector('#formEditar');
-            modalForm.querySelector('#editId').value = id;
-            modalForm.querySelector('#editPeso').value = peso;
-            modalForm.querySelector('#editAltura').value = altura;
-            modalForm.querySelector('#editBraco').value = braco;
-            modalForm.querySelector('#editOmbro').value = ombro;
-            modalForm.querySelector('#editPeito').value = peito;
-            modalForm.querySelector('#editCintura').value = cintura;
-            modalForm.querySelector('#editQuadril').value = quadril;
-            modalForm.querySelector('#editAbdominal').value = abdominal;
-            modalForm.querySelector('#editCoxa').value = coxa;
-            modalForm.querySelector('#editPanturrilha').value = panturrilha;
-
-            modalForm.action = `/atualizar_avaliacao/${id}`;
-        });
-
-        // Script para o Modal de Exclusão
-        const modalExcluir = document.getElementById('modalExcluir');
-        modalExcluir.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget;
-            const id = button.getAttribute('data-id');
-
-            // Define o link do botão de confirmação para a rota de exclusão correta
-            const linkConfirmacao = modalExcluir.querySelector('#btnConfirmarExclusao');
-            linkConfirmacao.href = `/deletar_avaliacao/${id}`;
-        });
-
-
-    </script>
-
-    </body>
 </div>
 
-</html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="/static/assets/js/generatepdf.js" defer></script>
 
+<script>
+    // Script para o Modal de Edição
+    const modalEditar = document.getElementById('modalEditar');
+    modalEditar.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+        const modalForm = modalEditar.querySelector('#formEditar');
+
+        modalForm.querySelector('#editId').value = id;
+        modalForm.querySelector('#editPeso').value = button.getAttribute('data-peso');
+        modalForm.querySelector('#editAltura').value = button.getAttribute('data-altura');
+        modalForm.querySelector('#editBraco').value = button.getAttribute('data-braco');
+        modalForm.querySelector('#editOmbro').value = button.getAttribute('data-ombro');
+        modalForm.querySelector('#editPeito').value = button.getAttribute('data-peito');
+        modalForm.querySelector('#editCintura').value = button.getAttribute('data-cintura');
+        modalForm.querySelector('#editQuadril').value = button.getAttribute('data-quadril');
+        modalForm.querySelector('#editAbdominal').value = button.getAttribute('data-abdominal');
+        modalForm.querySelector('#editCoxa').value = button.getAttribute('data-coxa');
+        modalForm.querySelector('#editPanturrilha').value = button.getAttribute('data-panturrilha');
+
+        modalForm.action = `/atualizar_avaliacao/${id}`;
+    });
+
+    // Script para o Modal de Exclusão
+    const modalExcluir = document.getElementById('modalExcluir');
+    modalExcluir.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+        const linkConfirmacao = modalExcluir.querySelector('#btnConfirmarExclusao');
+        linkConfirmacao.href = `/deletar_avaliacao/${id}`;
+    });
+</script>
+
+</body>
+</html>

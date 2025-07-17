@@ -18,13 +18,13 @@ class AvaliacaoDAO:
         try:
             cursor = self.con.cursor()
             if codigo != None:
-                # pegar somente uma planta
+                # pegar somente uma planta (mantenha o existente)
                 sql = "SELECT * FROM Avaliacao WHERE codigo=%s"
                 cursor.execute(sql, (codigo,))
                 avaliacao = cursor.fetchone()
                 return avaliacao
             else:
-                # pegar todas as plantas
+                # pegar todas as plantas (mantenha o existente)
                 sql = "SELECT * FROM Avaliacao WHERE Usuario_codigous IN (SELECT codigous FROM usuario)"
                 cursor.execute(sql)
                 ficha = cursor.fetchall()
@@ -73,11 +73,6 @@ class AvaliacaoDAO:
             self.cursor = self.db.cursor(dictionary=True)
 
         def buscar_todas_avaliacoes_com_log(self):
-            """
-            Busca todas as avaliações e já inclui os dados da última modificação
-            de cada uma, usando uma única consulta otimizada.
-            """
-            # Esta consulta SQL é robusta e projetada para funcionar corretamente.
             sql = """
                   SELECT A.*, \
                          U.nome AS nome_aluno, \

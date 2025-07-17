@@ -23,7 +23,7 @@ app.secret_key = "senha123"
 DB_HOST = "localhost"
 DB_USER = "root"
 DB_NAME = "academiadb"
-DB_PASS = ""
+DB_PASS = "Rcbcs2006!"
 
 app.auth = {
     # acao: { perfil:permissao }

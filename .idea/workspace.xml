@@ -5,10 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f574b97e-b19f-483e-b6b8-0477184b7737" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/finalAcademia.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/finalAcademia.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/academia/database/academiadb2CREATE.sql" beforeDir="false" afterPath="$PROJECT_DIR$/academia/database/academiadb2CREATE.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/academia/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/main.py" afterDir="false" />
@@ -100,7 +96,8 @@
       <option name="presentableId" value="Default" />
       <updated>1686837245144</updated>
       <workItem from="1752665167840" duration="8125000" />
-      <workItem from="1752753225076" duration="449000" />
+      <workItem from="1752753225076" duration="2556000" />
+      <workItem from="1752761816104" duration="11682000" />
     </task>
     <servers />
   </component>

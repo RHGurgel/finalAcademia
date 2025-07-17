@@ -112,18 +112,14 @@ class ExercicioDAO:
         except:
             return None
 
-    def listar_exercicios(self, codigo=None):
+
+    def listar_exercicios(self):
         try:
             cursor = self.con.cursor()
-            if codigo != None:
-                sql = 'SELECT * FROM exercicios ORDER BY tp_treino'
-                cursor.execute(sql, (codigo,))
-                lista_de_exercicio = cursor.fetchone()
-                return lista_de_exercicio
-            else:
-                sql = 'SELECT * FROM exercicios ORDER BY tp_treino'
-                cursor.execute(sql)
-                lista_de_exercicios = cursor.fetchall()
-                return lista_de_exercicios
-        except:
-            return None
+            sql = 'SELECT * FROM exercicios ORDER BY tp_treino'
+            cursor.execute(sql)
+            return cursor.fetchall()
+        except Exception as e:
+            print(f"Erro ao listar exercícios: {e}")
+            return []
+

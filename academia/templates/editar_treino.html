@@ -1,0 +1,156 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <title>Editar Treino</title>
+    <!-- [Inclua seus CSSs aqui] -->
+    <style>
+        .exercise-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        .exercise-card.selected {
+            border-color: #4CAF50;
+            background-color: #f8fff8;
+        }
+        .search-box {
+            margin-bottom: 20px;
+        }
+        #selected-exercises {
+            min-height: 100px;
+            border: 1px dashed #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- [Seu header] -->
+
+    <main>
+        <div class="container mt-4">
+            <h2>Editar Treino: {{ treino.nome }}</h2>
+
+            <div class="card">
+                <div class="card-body">
+                    <form id="form-editar-treino">
+                        <input type="hidden" id="treino-id" value="{{ treino.id }}">
+
+                        <div class="mb-3">
+                            <label for="nome-treino" class="form-label">Nome do Treino</label>
+                            <input type="text" class="form-control" id="nome-treino"
+                                   value="{{ treino.nome }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Exercícios Selecionados</label>
+                            <div id="selected-exercises">
+                                {% for ex in todos_exercicios if ex.id in exercicios_selecionados %}
+                                <div class="exercise-card selected" data-id="{{ ex.id }}">
+                                    <h5>{{ ex.nome }}</h5>
+                                    <p>{{ ex.descricao }}</p>
+                                    <button type="button" class="btn btn-sm btn-danger btn-remover">Remover</button>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3 search-box">
+                            <input type="text" class="form-control" id="search-exercise"
+                                   placeholder="Buscar exercícios...">
+                        </div>
+
+                        <div id="all-exercises">
+                            {% for ex in todos_exercicios %}
+                            <div class="exercise-card {% if ex.id in exercicios_selecionados %}d-none{% endif %}"
+                                 data-id="{{ ex.id }}">
+                                <h5>{{ ex.nome }}</h5>
+                                <p>{{ ex.descricao }}</p>
+                                <button type="button" class="btn btn-sm btn-success btn-adicionar">Adicionar</button>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                            <a href="/treinos" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- [Seu footer] -->
+
+    <script>
+    $(document).ready(function() {
+        // Filtro de busca
+        $('#search-exercise').on('input', function() {
+            const searchTerm = $(this).val().toLowerCase();
+            $('#all-exercises .exercise-card').each(function() {
+                const text = $(this).text().toLowerCase();
+                $(this).toggle(text.includes(searchTerm));
+            });
+        });
+
+        // Adicionar exercício
+        $(document).on('click', '.btn-adicionar', function() {
+            const card = $(this).closest('.exercise-card');
+            const clone = card.clone();
+            card.addClass('d-none');
+
+            clone.find('.btn-adicionar')
+                 .replaceWith('<button type="button" class="btn btn-sm btn-danger btn-remover">Remover</button>');
+            clone.appendTo('#selected-exercises');
+        });
+
+        // Remover exercício
+        $(document).on('click', '.btn-remover', function() {
+            const card = $(this).closest('.exercise-card');
+            const exerciseId = card.data('id');
+
+            card.remove();
+            $(`#all-exercises .exercise-card[data-id="${exerciseId}"]`).removeClass('d-none');
+        });
+
+        // Enviar formulário
+        $('#form-editar-treino').submit(function(e) {
+            e.preventDefault();
+
+            const treinoId = $('#treino-id').val();
+            const nome = $('#nome-treino').val();
+            const exerciciosIds = [];
+
+            $('#selected-exercises .exercise-card').each(function() {
+                exerciciosIds.push($(this).data('id'));
+            });
+
+            $.ajax({
+                url: `/atualizar_treino/${treinoId}`,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    nome: nome,
+                    exercicios_ids: exerciciosIds
+                }),
+                success: function(response) {
+                    if (response.success) {
+                        alert('Treino atualizado com sucesso!');
+                        window.location.href = '/treinos';
+                    } else {
+                        alert('Erro: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Erro ao conectar com o servidor');
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>

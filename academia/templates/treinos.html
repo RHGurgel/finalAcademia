@@ -1,11 +1,10 @@
-
 <!doctype html>
 <html class="no-js" lang="zxx">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Meus treinos</title>
-    <meta name="description" content="">
+    <title>Meus Treinos</title>
+    <meta name="description" content="Visualize seus treinos personalizados">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.ico">
 
@@ -17,15 +16,82 @@
     <link rel="stylesheet" href="static/assets/css/magnific-popup.css">
     <link rel="stylesheet" href="static/assets/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="static/assets/css/themify-icons.css">
-    <link rel="stylesheet" href="static/assets/css/themify-icons.css">
     <link rel="stylesheet" href="static/assets/css/slick.css">
     <link rel="stylesheet" href="static/assets/css/nice-select.css">
     <link rel="stylesheet" href="static/assets/css/style.css">
     <link rel="stylesheet" href="static/assets/css/responsive.css">
+    <style>
+        .treino-card {
+            margin-bottom: 30px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .treino-header {
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .treino-title {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+        .treino-date {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        .exercise-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .exercise-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        .exercise-item:last-child {
+            border-bottom: none;
+        }
+        .exercise-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .exercise-details {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 5px;
+        }
+        .exercise-detail {
+            margin-right: 15px;
+            font-size: 0.9rem;
+        }
+        .exercise-detail-label {
+            font-weight: 600;
+            color: #6c757d;
+        }
+        .no-treinos {
+            text-align: center;
+            padding: 40px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .btn-create-workout {
+            margin-top: 20px;
+        }
+        .badge-group {
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background-color: #e9ecef;
+            color: #495057;
+        }
+    </style>
 </head>
 <body>
     <!--? Preloader Start -->
-
     <!-- Preloader Start -->
     <header>
         <!-- Header Start -->
@@ -60,6 +126,7 @@
     </div>
     <!-- Header End -->
 </header>
+
 <main>
     <!--? Hero Start -->
     <div class="slider-area2">
@@ -68,12 +135,10 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="hero-cap hero-cap2 pt-70">
-
                             <div class="d-flex justify-content-between align-items-center">
-                                <h2>meus treinos</h2>
-                                <a href="criartreino" class="btn btn-primary">Criar novo treino</a>
+                                <h2>Meus Treinos</h2>
+                                <a href="criartreino" class="btn btn-primary">Criar Novo Treino</a>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -81,49 +146,78 @@
         </div>
     </div>
     <!-- Hero End -->
+
     <!--? Blog Area Start-->
+    <section class="blog_area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 mb-5 mb-lg-0">
+                    {% if treinos %}
+                        {% for treino in treinos %}
 
-    <h2 class="comments-count">
-        Todos os exercícios
-    </h2>
-
-  <div class="reply-form">
-
-    <table class="table">
-      <thead>
-        <th>Codigo</th>
-        <th>Nome</th>
-        <th>Descrição</th>
-        <th>Equipamento</th>
-        <th>Grupo Muscular</th>
-
-      </thead>
-      <tbody>
-      {% if exercicio %}
-        {% for x in exercicio %}
-          <tr>
-            <td name ='codigo'>{{ x[0] }}</td>
-            <td name ='nome'>{{ x[1] }}</td>
-            <td name ='descricao'>{{ x[2] }}</td>
-            <td name ='equipamento'>{{ x[3] }}</td>
-            <td name ='gpmuscular'>{{ x[4] }}</td>
-            <td name ='video'> <iframe width="560" height="315" src= "{{x[5]}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> </td>
-
-          </tr>
-        {% endfor %}
+                        <div class="treino-card">
+                            <div class="treino-header d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class="treino-title">{{ treino.nome }}</h3>
+                                    <span class="treino-date">Criado em: {{ treino.data_criacao }}</span>
+                                </div>
 
 
-      {% else %}
-        <p>Nenhum item foi encontrado</p>
-      {% endif %}
-      </tbody>
-    </table>
-  </div>
+                                <div class="action-buttons">
+                                <a href="/editar_treino/{{ treino.id }}" class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i> Editar
+                                </a>
 
+                                    <a class="btn btn-sm btn-danger btn-deletar-treino"
+                                    data-treino-id="{{ treino.id }}">
+                                    Excluir
+                                    </a>
+                        </div>
+                                </div>
+                            </div>
+                            <div class="treino-body">
+                                <ul class="exercise-list">
+                                    {% for exercicio in treino.exercicios %}
+                                    <li class="exercise-item">
+                                        <div class="exercise-name">{{ exercicio.exercicio_nome }}</div>
+                                        <div class="exercise-details">
+                                            <div class="exercise-detail">
+                                                <span class="exercise-detail-label">Grupo:</span>
+                                                <span class="badge-group">{{ exercicio.grupo_muscular }}</span>
+                                            </div>
+                                            <div class="exercise-detail">
+                                                <span class="exercise-detail-label">Equipamento:</span>
+                                                <span>{{ exercicio.equipamento }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="exercise-description">
+                                            <p>{{ exercicio.descricao }}</p>
+                                        </div>
+                                        <div>
+                                            <a href="{{ exercicio.video }}" target="_blank" class="btn btn-sm btn-info">
+                                                Ver Demonstração
+                                            </a>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-treinos">
+                            <h3>Você ainda não criou nenhum treino</h3>
+                            <p>Comece criando seu primeiro treino personalizado agora mesmo</p>
+                            <a href="criartreino" class="btn btn-primary btn-create-workout">Criar Treino</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+    </section>
     <!-- Blog Area End -->
-    <!-- ? services-area -->
-
 </main>
+
 <footer>
     <!--? Footer Start-->
     <div class="footer-area black-bg">
@@ -185,43 +279,99 @@
       </div>
       <!-- Footer End-->
   </footer>
+
   <!-- Scroll Up -->
   <div id="back-top" >
     <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 </div>
 
 <!-- JS here -->
-
-<script src=".static//assets/js/vendor/modernizr-3.5.0.min.js"></script>
+<script src="static/assets/js/vendor/modernizr-3.5.0.min.js"></script>
 <!-- Jquery, Popper, Bootstrap -->
-<script src=".static//assets/js/vendor/jquery-1.12.4.min.js"></script>
-<script src=".static//assets/js/popper.min.js"></script>
-<script src=".static//assets/js/bootstrap.min.js"></script>
+<script src="static/assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="static/assets/js/popper.min.js"></script>
+<script src="static/assets/js/bootstrap.min.js"></script>
 <!-- Jquery Mobile Menu -->
-<script src=".static//assets/js/jquery.slicknav.min.js"></script>
+<script src="static/assets/js/jquery.slicknav.min.js"></script>
 
 <!-- Jquery Slick , Owl-Carousel Plugins -->
-<script src=".static//assets/js/owl.carousel.min.js"></script>
-<script src=".static//assets/js/slick.min.js"></script>
+<script src="static/assets/js/owl.carousel.min.js"></script>
+<script src="static/assets/js/slick.min.js"></script>
 <!-- One Page, Animated-HeadLin -->
-<script src=".static//assets/js/wow.min.js"></script>
-<script src=".static//assets/js/animated.headline.js"></script>
+<script src="static/assets/js/wow.min.js"></script>
+<script src="static/assets/js/animated.headline.js"></script>
 
 <!-- Nice-select, sticky -->
-<script src=".static//assets/js/jquery.nice-select.min.js"></script>
-<script src=".static//assets/js/jquery.sticky.js"></script>
-<script src=".static//assets/js/jquery.magnific-popup.js"></script>
+<script src="static/assets/js/jquery.nice-select.min.js"></script>
+<script src="static/assets/js/jquery.sticky.js"></script>
+<script src="static/assets/js/jquery.magnific-popup.js"></script>
 
 <!-- contact js -->
-<script src=".static//assets/js/contact.js"></script>
-<script src=".static//assets/js/jquery.form.js"></script>
-<script src=".static//assets/js/jquery.validate.min.js"></script>
-<script src=".static//assets/js/mail-script.js"></script>
-<script src=".static//assets/js/jquery.ajaxchimp.min.js"></script>
+<script src="static/assets/js/contact.js"></script>
+<script src="static/assets/js/jquery.form.js"></script>
+<script src="static/assets/js/jquery.validate.min.js"></script>
+<script src="static/assets/js/mail-script.js"></script>
+<script src="static/assets/js/jquery.ajaxchimp.min.js"></script>
 
 <!-- Jquery Plugins, main Jquery -->
-<script src=".static//assets/js/plugins.js"></script>
-<script src=".static//assets/js/main.js"></script>
+<script src="static/assets/js/plugins.js"></script>
+<script src="static/assets/js/main.js"></script>
 
+<script>
+    // Função para confirmar exclusão de treino
+    $(document).on('click', '.btn-delete-treino', function(e) {
+        e.preventDefault();
+        const deleteUrl = $(this).attr('href');
+
+        if (confirm('Tem certeza que deseja excluir este treino?')) {
+            $.ajax({
+                url: deleteUrl,
+                method: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        alert('Treino excluído com sucesso!');
+                        location.reload();
+                    } else {
+                        alert('Erro ao excluir treino: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Erro ao excluir treino. Tente novamente.');
+                }
+            });
+        }
+    });
+    $(document).ready(function() {
+    // Deleção de treino
+    $('.btn-deletar-treino').click(function() {
+        const treinoId = $(this).data('treino-id');
+        const treinoElement = $(this).closest('.treino-card');
+
+        if (confirm('Tem certeza que deseja excluir este treino? Esta ação não pode ser desfeita.')) {
+            $(this).html('<span class="spinner-border spinner-border-sm" role="status"></span> Excluindo...').prop('disabled', true);
+
+            $.ajax({
+                url: `/deletar_treino/${treinoId}`,
+                method: 'DELETE',
+                success: function(response) {
+                    if (response.success) {
+                        treinoElement.fadeOut(300, function() {
+                            $(this).remove();
+                            // Atualiza contagem ou mensagem se necessário
+                        });
+                    } else {
+                        alert('Erro: ' + response.message);
+                        $('.btn-deletar-treino').html('Excluir').prop('disabled', false);
+                    }
+                },
+                error: function() {
+                    alert('Erro ao conectar com o servidor');
+                    $('.btn-deletar-treino').html('Excluir').prop('disabled', false);
+                }
+            });
+        }
+    });
+});
+</script>
 </body>
 </html>

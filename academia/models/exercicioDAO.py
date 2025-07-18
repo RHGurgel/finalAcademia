@@ -123,3 +123,6 @@ class ExercicioDAO:
             print(f"Erro ao listar exercícios: {e}")
             return []
 
+
+  
+

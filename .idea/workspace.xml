@@ -5,11 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f574b97e-b19f-483e-b6b8-0477184b7737" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/academia/database/função.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/academia/database/gatilhos.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/academia/database/regra.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/academia/database/visao.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/academia/models/treino.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/academia/models/treinoDAO.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/academia/models/treinoexercicioDAO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/finalAcademia.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/finalAcademia.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/academia/database/academiadb2CREATE.sql" beforeDir="false" afterPath="$PROJECT_DIR$/academia/database/academiadb2CREATE.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/academia/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/models/avaliacaoDAO.py" beforeDir="false" afterPath="$PROJECT_DIR$/academia/models/avaliacaoDAO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/academia/templates/listaraval.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/listaraval.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/criar_treino.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/criar_treino.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/academia/templates/treinos.html" beforeDir="false" afterPath="$PROJECT_DIR$/academia/templates/treinos.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,8 +29,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -36,46 +46,24 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Fael" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;Renixon-Christian&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/FaelPressao/finalAcademia.git&quot;,
-    &quot;accountId&quot;: &quot;ceebd5b8-c462-41ed-bbc3-d215a4f61dec&quot;
-  }
-}</component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 8
-}</component>
   <component name="ProjectId" id="2RFE5HUxVMsGfr7GWfoz9eAV4RU" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  }
-}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\20201084010012\Downloads\academia_rafael\academia\templates" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Rafael Gurgel\Projeto-Final-Academia\academia\database" />
       <recent name="C:\Users\20201084010012\Downloads\academia_rafael\academia\models" />
     </key>
   </component>
@@ -96,8 +84,6 @@
       <option name="presentableId" value="Default" />
       <updated>1686837245144</updated>
       <workItem from="1752665167840" duration="8125000" />
-      <workItem from="1752753225076" duration="2556000" />
-      <workItem from="1752761816104" duration="11682000" />
     </task>
     <servers />
   </component>
@@ -117,5 +103,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

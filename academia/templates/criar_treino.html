@@ -327,54 +327,53 @@
 <script src="static/assets/js/main.js"></script>
 
 <script>
+    // Declarar a variável exercises globalmente
+    let exercises = [];
+
     // Função para carregar exercícios do servidor
     function loadExercises() {
         $.ajax({
-            url: '/get_exercises',  // Rota que retorna os exercícios
+            url: '/get_exercises',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-                // Atualiza a lista de exercícios
                 exercises = data;
                 renderExercises(exercises);
             },
-            error: function() {
-                alert('Erro ao carregar exercícios');
+            error: function(xhr, status, error) {
+                console.error('Erro ao carregar exercícios:', error);
+                alert('Erro ao carregar exercícios. Verifique o console para detalhes.');
             }
         });
     }
-
-    // Inicializar a página
-    $(document).ready(function() {
-        loadExercises();  // Carrega exercícios do servidor
-        setupEventListeners();
-    });
-
 
     // Renderizar exercícios
     function renderExercises(exerciseList) {
         const container = $('#exercises-container');
         container.empty();
 
-        if (exerciseList.length === 0) {
-            container.html('<div class="col-12"><div class="alert alert-info">Nenhum exercício encontrado com esse filtro.</div></div>');
+        if (!exerciseList || exerciseList.length === 0) {
+            container.html('<div class="col-12"><div class="alert alert-info">Nenhum exercício encontrado.</div></div>');
             return;
         }
 
-        exerciseList.forEach(exercise => {
+        exerciseList.forEach(ex => {
             const exerciseCard = `
-                <div class="col-md-6" data-group="${exercise.muscleGroup}">
+                <div class="col-md-6" data-group="${ex.muscleGroup}">
                     <div class="card card-exercise">
                         <div class="card-body">
-                            <h5 class="card-title">${exercise.nome}</h5>
-                            <p class="card-text">${exercise.descricao}</p>
-                            <p class="card-text"><strong>Equipamento:</strong> ${exercise.equipamento}</p>
-                            <p class="card-text"><strong>Grupo Muscular:</strong> <span class="muscle-group">${exercise.muscleGroup}</span></p>
+                            <h5 class="card-title">${ex.nome}</h5>
+                            <p class="card-text">${ex.descricao || 'Sem descrição'}</p>
+                            <p class="card-text"><strong>Equipamento:</strong> ${ex.equipamento || 'Nenhum'}</p>
+                            <p class="card-text">
+                                <strong>Grupo Muscular:</strong>
+                                <span class="muscle-group">${ex.muscleGroup}</span>
+                            </p>
                             <div class="d-flex justify-content-between">
-                                <button class="btn btn-add add-exercise" data-id="${exercise.id}">
+                                <button class="btn btn-add add-exercise" data-id="${ex.id}">
                                     Adicionar
                                 </button>
-                                <a href="${exercise.video}" target="_blank" class="btn btn-link">
+                                <a href="${ex.video}" target="_blank" class="btn btn-link">
                                     Ver Vídeo
                                 </a>
                             </div>
@@ -385,53 +384,47 @@
             container.append(exerciseCard);
         });
     }
-    const muscleGroupClasses = {
-    'Peito': 'badge-chest',
-    'Costas': 'badge-back',
-    'Perna': 'badge-legs',
-    'Alongamento': 'badge-stretch',  // Novo grupo
-    'Braço': 'badge-arms',
-    'Abdome': 'badge-core'
-};
+
     // Configurar listeners de eventos
     function setupEventListeners() {
         // Busca de exercícios
         $('#exercise-search').on('input', function() {
             const searchTerm = $(this).val().toLowerCase();
             const filtered = exercises.filter(exercise => {
-        // Usar os novos nomes de campos: 'nome' e 'descricao'
-                return exercise.nome.toLowerCase().includes(searchTerm) ||
-                    exercise.descricao.toLowerCase().includes(searchTerm);
+                return (exercise.nome && exercise.nome.toLowerCase().includes(searchTerm)) ||
+                       (exercise.descricao && exercise.descricao.toLowerCase().includes(searchTerm));
             });
             renderExercises(filtered);
         });
 
         // Filtro por grupo muscular
         $('.filter-btn').click(function() {
-    $('.filter-btn').removeClass('active');
-    $(this).addClass('active');
+            $('.filter-btn').removeClass('active');
+            $(this).addClass('active');
+            const group = $(this).data('group');
 
-    const group = $(this).data('group');
-    if (group === 'all') {
-        renderExercises(exercises);
-    } else {
-        // Mapear para os valores do banco
-        let dbGroup = group;
-        if (group === 'alongamento') dbGroup = 'Alongamento';
-        if (group === 'peito') dbGroup = 'Peito';
-        if (group === 'costas') dbGroup = 'Costas';
-        if (group === 'pernas') dbGroup = 'Perna';
-        if (group === 'bracos') dbGroup = 'Braço';
-        if (group === 'abdomen') dbGroup = 'Abdome';
+            if (group === 'all') {
+                renderExercises(exercises);
+            } else {
+                // Mapear para os valores do banco
+                const groupMap = {
+                    'peito': 'Peito',
+                    'costas': 'Costas',
+                    'pernas': 'Perna',
+                    'alongamento': 'Alongamento',
+                    'bracos': 'Braço',
+                    'abdomen': 'Abdome'
+                };
 
-        const filtered = exercises.filter(exercise => exercise.muscleGroup === dbGroup);
-        renderExercises(filtered);
-    }
-});
+                const dbGroup = groupMap[group] || group;
+                const filtered = exercises.filter(ex => ex.muscleGroup === dbGroup);
+                renderExercises(filtered);
+            }
+        });
 
         // Adicionar exercício ao treino
         $(document).on('click', '.add-exercise', function() {
-            const exerciseId = $(this).data('id');
+            const exerciseId = parseInt($(this).data('id'));
             const exercise = exercises.find(e => e.id === exerciseId);
 
             if (exercise) {
@@ -464,8 +457,27 @@
                 return;
             }
 
-            // Em uma aplicação real, isso enviaria os dados para o servidor
-            alert(`Treino "${workoutName}" salvo com sucesso com ${selectedExercises.length} exercícios!`);
+            // Enviar para o servidor
+            $.ajax({
+                url: '/save_workout',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    workout_name: workoutName,
+                    exercise_ids: selectedExercises
+                }),
+                success: function(response) {
+                    if (response.success) {
+                        alert(`Treino "${workoutName}" salvo com sucesso!`);
+                        window.location.href = '/treinos';
+                    } else {
+                        alert('Erro ao salvar treino: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Erro ao salvar treino. Tente novamente.');
+                }
+            });
         });
     }
 
@@ -492,6 +504,12 @@
         const count = $('.workout-item').length;
         $('#exercise-counter').text(`(${count})`);
     }
+
+    // Inicializar a página
+    $(document).ready(function() {
+        loadExercises();
+        setupEventListeners();
+    });
 </script>
 </body>
 </html>

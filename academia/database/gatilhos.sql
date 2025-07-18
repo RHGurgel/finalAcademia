@@ -1,4 +1,3 @@
--- Criar gatilhos
 DELIMITER
 $$
 CREATE TRIGGER log_after_avaliacao_insert
@@ -14,7 +13,7 @@ BEGIN
     END$$
     DELIMITER ;
 
--- GATILHO PARA EDIÇÃO (UPDATE) em Avaliacao
+
 DELIMITER $$
     CREATE TRIGGER log_after_avaliacao_update
         AFTER UPDATE

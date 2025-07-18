@@ -1,8 +1,11 @@
-import os
+from flask import Flask, g, render_template,\
+    request, redirect, url_for, flash, session, make_response, jsonify
 
+
+import hashlib
+import os
 import mysql.connector
-from flask import Flask, g, render_template, \
-    request, redirect, url_for, flash, session, jsonify
+import requests, json
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
@@ -13,9 +16,6 @@ from models.exercicio import exercicio
 from models.exercicioDAO import ExercicioDAO
 from models.avaliacao import Avaliacao
 from models.avaliacaoDAO import AvaliacaoDAO
-from models.treino import Treino
-from models.treinoDAO import TreinoDAO
-from models.treinoexercicioDAO import TreinoExercicioDAO
 
 app = Flask(__name__)
 app.secret_key = "senha123"
@@ -327,61 +327,21 @@ def deletar_avaliacao(id):
 
     return redirect(url_for('listaraval'))
 
-@app.route('/treinos', methods=['GET'])
+@app.route('/treinos', methods=['GET', 'POST'])
 def treinos():
-    if 'logado' not in session:
-        return redirect(url_for('login'))
+    dao = ExercicioDAO(get_db())
+    exercicio_db = dao.listar_exercicios()
+    return render_template("treinos.html", titulo="treinos", exercicio=exercicio_db)
 
-    user_id = session['logado']['codigo']
-
-    # Buscar treinos do usuário
-    treino_dao = TreinoDAO(get_db())
-    treinos = treino_dao.listar_por_usuario(user_id)
-
-    # Para cada treino, buscar exercícios
-    treinos_com_exercicios = []
-    treino_exercicio_dao = TreinoExercicioDAO(get_db())
-
-    for treino in treinos:
-        exercicios = treino_exercicio_dao.listar_exercicios_por_treino(treino[0])
-        treinos_com_exercicios.append({
-            'id': treino[0],
-            'nome': treino[1],
-            'data_criacao': treino[2],
-            'exercicios': exercicios
-        })
-
-    return render_template("treinos.html", titulo="treinos", treinos=treinos_com_exercicios)
 
 @app.route('/criartreino', methods=['GET', 'POST'])
 def criartreino():
     return render_template("criar_treino.html", titulo="criartreino")
 
-@app.route('/save_workout', methods=['POST'])
-def save_workout():
-    try:
-        data = request.get_json()
-        workout_name = data['workout_name']
-        exercise_ids = data['exercise_ids']
-        user_id = session['logado']['codigo']
-
-        # Salvar treino
-        treino = Treino(workout_name, user_id)
-        treino_dao = TreinoDAO(get_db())
-        treino_id = treino_dao.inserir(treino)
-
-        # Salvar exercícios do treino
-        treino_exercicio_dao = TreinoExercicioDAO(get_db())
-        for ex_id in exercise_ids:
-            treino_exercicio_dao.inserir(treino_id, ex_id)
-
-        return jsonify({'success': True, 'message': 'Treino salvo com sucesso!'})
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)})
-
 @app.route('/get_exercises')
 def get_exercises():
     try:
+
         dao = ExercicioDAO(get_db())
         exercicios = dao.listar_exercicios()
 
@@ -402,68 +362,6 @@ def get_exercises():
         print(f"Erro: {e}")
         return jsonify([])
 
-@app.route('/deletar_treino/<int:treino_id>', methods=['DELETE'])
-def deletar_treino(treino_id):
-    if 'logado' not in session:
-        return jsonify({'success': False, 'message': 'Não autorizado'}), 401
-
-    try:
-        dao = TreinoDAO(get_db())
-        if dao.deletar_treino(treino_id):
-            return jsonify({'success': True, 'message': 'Treino deletado com sucesso'})
-        else:
-            return jsonify({'success': False, 'message': 'Treino não encontrado'}), 404
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 500
-
-
-@app.route('/editar_treino/<int:treino_id>', methods=['GET'])
-def editar_treino_page(treino_id):
-    if 'logado' not in session:
-        return redirect(url_for('login'))
-
-    # Verifica se o treino pertence ao usuário
-    treino_dao = TreinoDAO(get_db())
-    treino = treino_dao.buscar_treino_por_id(treino_id)
-
-    if not treino or treino['usuario_id'] != session['logado']['codigo']:
-        flash('Você não tem permissão para editar este treino', 'danger')
-        return redirect(url_for('treinos'))
-
-    # Busca todos exercícios disponíveis
-    exercicio_dao = ExercicioDAO(get_db())
-    todos_exercicios = exercicio_dao.listar_exercicios()
-
-    # Converte string de IDs para lista
-    exercicios_selecionados = []
-    if treino['exercicios_ids']:
-        exercicios_selecionados = [int(id) for id in treino['exercicios_ids'].split(',')]
-
-    return render_template('editar_treino.html',
-                           treino=treino,
-                           todos_exercicios=todos_exercicios,
-                           exercicios_selecionados=exercicios_selecionados)
-
-
-@app.route('/atualizar_treino/<int:treino_id>', methods=['POST'])
-def atualizar_treino(treino_id):
-    if 'logado' not in session:
-        return jsonify({'success': False, 'message': 'Não autorizado'}), 401
-
-    try:
-        data = request.get_json()
-        nome = data.get('nome')
-        exercicios_ids = data.get('exercicios_ids', [])
-
-        if not nome:
-            return jsonify({'success': False, 'message': 'Nome do treino é obrigatório'}), 400
-
-        treino_dao = TreinoDAO(get_db())
-        if treino_dao.atualizar_treino(treino_id, nome, exercicios_ids):
-            return jsonify({'success': True, 'message': 'Treino atualizado com sucesso'})
-        return jsonify({'success': False, 'message': 'Nenhum treino foi atualizado'}), 400
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 500
 
 if __name__=='__main__':
     app.run(host="0.0.0.0", port=80, debug=True)
